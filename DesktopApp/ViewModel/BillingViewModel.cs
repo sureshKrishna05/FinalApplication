@@ -6,8 +6,8 @@ namespace DesktopApp.ViewModel
 {
     public class BillingViewModel : INotifyPropertyChanged
     {
-        private string _partyName;
-        private string _invoiceNo;
+        private string _partyName = string.Empty;
+        private string _invoiceNo = string.Empty;
         private DateTime? _invoiceDate;
 
         public string PartyName
@@ -62,7 +62,7 @@ namespace DesktopApp.ViewModel
             System.Diagnostics.Debug.WriteLine($"Searching for: PartyName={PartyName}, InvoiceNo={InvoiceNo}, InvoiceDate={InvoiceDate}");
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
     }

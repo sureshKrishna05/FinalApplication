@@ -5,9 +5,11 @@ namespace DesktopApp.ViewModel
 {
     public class DashboardViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        private void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        private void OnPropertyChanged(string name) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
         public string TodaySales { get; set; } = "₹ 12,340";
         public string PendingInvoices { get; set; } = "4 Invoices";
         public string LowStockItems { get; set; } = "9 Items";
@@ -34,14 +36,14 @@ namespace DesktopApp.ViewModel
 
     public class OrderItem
     {
-        public string OrderId { get; set; }
-        public string Product { get; set; }
+        public string OrderId { get; set; } = string.Empty;
+        public string Product { get; set; } = string.Empty;
     }
 
     public class StockItem
     {
-        public string Product { get; set; }
+        public string Product { get; set; } = string.Empty;
         public int Quantity { get; set; }
-        public string Unit { get; set; }
+        public string Unit { get; set; } = string.Empty;
     }
 }

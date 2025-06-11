@@ -111,10 +111,12 @@ namespace DesktopApp
         }
         private void LVItemClick(object sender, MouseButtonEventArgs e)
         {
-            var item = sender as ListViewItem;
-            if (item?.Tag != null)
-                LoadPage(item.Tag.ToString());
+            if (sender is ListViewItem item && item.Tag is string pageTag)
+            {
+                LoadPage(pageTag);
+            }
         }
+
 
     }
 }
