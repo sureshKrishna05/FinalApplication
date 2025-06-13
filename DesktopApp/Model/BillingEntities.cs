@@ -39,6 +39,9 @@ namespace DesktopApp.Models
         public int Quantity { get; set; }
 
         [Required]
+        public string Unit { get; set; } = string.Empty;
+
+        [Required]
         public decimal Price { get; set; }
 
         // Foreign key

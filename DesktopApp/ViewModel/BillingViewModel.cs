@@ -56,7 +56,7 @@ namespace DesktopApp.ViewModel
             SearchCommand = new RelayCommand(ExecuteSearch);
         }
 
-        private void ExecuteSearch(object parameter)
+        private void ExecuteSearch(object? parameter)
         {
             // Replace with actual search logic
             System.Diagnostics.Debug.WriteLine($"Searching for: PartyName={PartyName}, InvoiceNo={InvoiceNo}, InvoiceDate={InvoiceDate}");

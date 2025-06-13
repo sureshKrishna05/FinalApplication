@@ -1,49 +1,47 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace DesktopApp.ViewModel
 {
     public class DashboardViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        private string _todaySales = "₹ 0";
+        private string _pendingInvoices = "0 Invoices";
+        private string _lowStockItems = "0 Items";
 
-        private void OnPropertyChanged(string name) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public string TodaySales
+        {
+            get => _todaySales;
+            set { _todaySales = value; OnPropertyChanged(nameof(TodaySales)); }
+        }
 
-        public string TodaySales { get; set; } = "₹ 12,340";
-        public string PendingInvoices { get; set; } = "4 Invoices";
-        public string LowStockItems { get; set; } = "9 Items";
+        public string PendingInvoices
+        {
+            get => _pendingInvoices;
+            set { _pendingInvoices = value; OnPropertyChanged(nameof(PendingInvoices)); }
+        }
 
-        public ObservableCollection<OrderItem> RecentOrders { get; set; }
-        public ObservableCollection<StockItem> LowStockList { get; set; }
+        public string LowStockItems
+        {
+            get => _lowStockItems;
+            set { _lowStockItems = value; OnPropertyChanged(nameof(LowStockItems)); }
+        }
 
         public DashboardViewModel()
         {
-            RecentOrders = new ObservableCollection<OrderItem>
-            {
-                new OrderItem { OrderId = "ORD001", Product = "Betap Capsule" },
-                new OrderItem { OrderId = "ORD002", Product = "Paracetamol" },
-                new OrderItem { OrderId = "ORD003", Product = "Domperid" },
-            };
-
-            LowStockList = new ObservableCollection<StockItem>
-            {
-                new StockItem { Product = "Domperid", Quantity = 5, Unit = "Strips" },
-                new StockItem { Product = "Gel", Quantity = 2, Unit = "Tubes" },
-            };
+            // Placeholder for future initialization
+            LoadDashboardData();
         }
-    }
 
-    public class OrderItem
-    {
-        public string OrderId { get; set; } = string.Empty;
-        public string Product { get; set; } = string.Empty;
-    }
+        private void LoadDashboardData()
+        {
+            // You can manually assign data here or inject from services
+            TodaySales = "₹ 0";
+            PendingInvoices = "0 Invoices";
+            LowStockItems = "0 Items";
+        }
 
-    public class StockItem
-    {
-        public string Product { get; set; } = string.Empty;
-        public int Quantity { get; set; }
-        public string Unit { get; set; } = string.Empty;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged(string name) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

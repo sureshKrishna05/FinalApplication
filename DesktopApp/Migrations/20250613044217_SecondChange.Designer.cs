@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DesktopApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250611184618_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250613044217_SecondChange")]
+    partial class SecondChange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,22 @@ namespace DesktopApp.Migrations
                     b.HasIndex("PartyId");
 
                     b.ToTable("Invoices");
+
+                    b.HasData(
+                        new
+                        {
+                            InvoiceId = 1,
+                            InvoiceDate = new DateTime(2025, 6, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            InvoiceNo = "INV001",
+                            PartyId = 1
+                        },
+                        new
+                        {
+                            InvoiceId = 2,
+                            InvoiceDate = new DateTime(2025, 6, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            InvoiceNo = "INV002",
+                            PartyId = 2
+                        });
                 });
 
             modelBuilder.Entity("DesktopApp.Models.Party", b =>
@@ -64,6 +80,22 @@ namespace DesktopApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Parties");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Trichy",
+                            Name = "Suresh Pharma",
+                            Phone = "9876543210"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Chennai",
+                            Name = "HealthCare Plus",
+                            Phone = "1234567890"
+                        });
                 });
 
             modelBuilder.Entity("DesktopApp.Models.Product", b =>
@@ -85,11 +117,44 @@ namespace DesktopApp.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ProductId");
 
                     b.HasIndex("InvoiceId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            InvoiceId = 1,
+                            Price = 50m,
+                            ProductName = "Paracetamol",
+                            Quantity = 10,
+                            Unit = "Strips"
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            InvoiceId = 1,
+                            Price = 100m,
+                            ProductName = "Amoxicillin",
+                            Quantity = 5,
+                            Unit = "Capsules"
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            InvoiceId = 2,
+                            Price = 25m,
+                            ProductName = "Cetrizine",
+                            Quantity = 20,
+                            Unit = "Tablet"
+                        });
                 });
 
             modelBuilder.Entity("DesktopApp.Models.Invoice", b =>

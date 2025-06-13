@@ -36,7 +36,7 @@
             <!-- Billing Card -->
             <Border Grid.Column="0" Background="White" CornerRadius="10" Margin="0,0,0,850" Padding="20" BorderBrush="#ddd" BorderThickness="1">
                 <StackPanel>
-                    <TextBlock Text="Today's Sales" FontWeight="Bold" FontSize="16" Margin="0 0 0 10"/>
+                    <TextBlock Text="" FontWeight="Bold" FontSize="16" Margin="0 0 0 10"/>
                     <TextBlock Text="₹ 0" FontSize="24" FontWeight="Bold" Foreground="Green"/>
                 </StackPanel>
             </Border>

@@ -43,14 +43,14 @@ namespace DesktopApp.Migrations
                         new
                         {
                             InvoiceId = 1,
-                            InvoiceDate = new DateTime(2025, 6, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            InvoiceDate = new DateTime(2025, 6, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             InvoiceNo = "INV001",
                             PartyId = 1
                         },
                         new
                         {
                             InvoiceId = 2,
-                            InvoiceDate = new DateTime(2025, 6, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            InvoiceDate = new DateTime(2025, 6, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             InvoiceNo = "INV002",
                             PartyId = 2
                         });
@@ -114,6 +114,10 @@ namespace DesktopApp.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ProductId");
 
                     b.HasIndex("InvoiceId");
@@ -127,7 +131,8 @@ namespace DesktopApp.Migrations
                             InvoiceId = 1,
                             Price = 50m,
                             ProductName = "Paracetamol",
-                            Quantity = 10
+                            Quantity = 10,
+                            Unit = "Strips"
                         },
                         new
                         {
@@ -135,7 +140,8 @@ namespace DesktopApp.Migrations
                             InvoiceId = 1,
                             Price = 100m,
                             ProductName = "Amoxicillin",
-                            Quantity = 5
+                            Quantity = 5,
+                            Unit = "Capsules"
                         },
                         new
                         {
@@ -143,7 +149,8 @@ namespace DesktopApp.Migrations
                             InvoiceId = 2,
                             Price = 25m,
                             ProductName = "Cetrizine",
-                            Quantity = 20
+                            Quantity = 20,
+                            Unit = "Tablet"
                         });
                 });
 

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DesktopApp.Migrations
 {
     /// <inheritdoc />
@@ -55,6 +57,7 @@ namespace DesktopApp.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ProductName = table.Column<string>(type: "TEXT", nullable: false),
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    Unit = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     InvoiceId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -67,6 +70,34 @@ namespace DesktopApp.Migrations
                         principalTable: "Invoices",
                         principalColumn: "InvoiceId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Parties",
+                columns: new[] { "Id", "Address", "Name", "Phone" },
+                values: new object[,]
+                {
+                    { 1, "Trichy", "Suresh Pharma", "9876543210" },
+                    { 2, "Chennai", "HealthCare Plus", "1234567890" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Invoices",
+                columns: new[] { "InvoiceId", "InvoiceDate", "InvoiceNo", "PartyId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 6, 12, 0, 0, 0, 0, DateTimeKind.Local), "INV001", 1 },
+                    { 2, new DateTime(2025, 6, 12, 0, 0, 0, 0, DateTimeKind.Local), "INV002", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "InvoiceId", "Price", "ProductName", "Quantity", "Unit" },
+                values: new object[,]
+                {
+                    { 1, 1, 50m, "Paracetamol", 10, "Strips" },
+                    { 2, 1, 100m, "Amoxicillin", 5, "Capsules" },
+                    { 3, 2, 25m, "Cetrizine", 20, "Tablet" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,6 +1,7 @@
 ﻿using DesktopApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Windows.Input;
 
 namespace DesktopApp.Data
 {
@@ -43,9 +44,9 @@ namespace DesktopApp.Data
             );
 
             modelBuilder.Entity<Product>().HasData(
-                new Product { ProductId = 1, InvoiceId = 1, ProductName = "Paracetamol", Quantity = 10, Price = 50 },
-                new Product { ProductId = 2, InvoiceId = 1, ProductName = "Amoxicillin", Quantity = 5, Price = 100 },
-                new Product { ProductId = 3, InvoiceId = 2, ProductName = "Cetrizine", Quantity = 20, Price = 25 }
+                new Product { ProductId = 1, InvoiceId = 1, ProductName = "Paracetamol", Quantity = 10, Price = 50, Unit = "Strips"},
+                new Product { ProductId = 2, InvoiceId = 1, ProductName = "Amoxicillin", Quantity = 5, Price = 100, Unit = "Capsules"},
+                new Product { ProductId = 3, InvoiceId = 2, ProductName = "Cetrizine", Quantity = 20, Price = 25, Unit = "Tablet" }
             );
         }
     }

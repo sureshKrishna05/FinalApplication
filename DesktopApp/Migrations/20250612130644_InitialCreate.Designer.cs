@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DesktopApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250611185854_SeedData")]
-    partial class SeedData
+    [Migration("20250612130644_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,6 +117,10 @@ namespace DesktopApp.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ProductId");
 
                     b.HasIndex("InvoiceId");
@@ -130,7 +134,8 @@ namespace DesktopApp.Migrations
                             InvoiceId = 1,
                             Price = 50m,
                             ProductName = "Paracetamol",
-                            Quantity = 10
+                            Quantity = 10,
+                            Unit = "Strips"
                         },
                         new
                         {
@@ -138,7 +143,8 @@ namespace DesktopApp.Migrations
                             InvoiceId = 1,
                             Price = 100m,
                             ProductName = "Amoxicillin",
-                            Quantity = 5
+                            Quantity = 5,
+                            Unit = "Capsules"
                         },
                         new
                         {
@@ -146,7 +152,8 @@ namespace DesktopApp.Migrations
                             InvoiceId = 2,
                             Price = 25m,
                             ProductName = "Cetrizine",
-                            Quantity = 20
+                            Quantity = 20,
+                            Unit = "Tablet"
                         });
                 });
 
