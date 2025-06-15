@@ -24,6 +24,7 @@ namespace DesktopApp
     {
         Dashboard dash = new Dashboard();
         Billing bill = new Billing();
+        DataEntryPage dta = new DataEntryPage();
         public MainWindow()
         {
 
@@ -106,6 +107,13 @@ namespace DesktopApp
                     GridText("Order History");
                     bill.HorizontalAlignment = HorizontalAlignment.Stretch;
                     contentArea.Children.Add(new Views.Billing());
+                    break;
+
+                case "Invoice":
+                    contentArea.Children.Clear();
+                    GridText("Test");
+                    dta.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    contentArea.Children.Add(new Views.DataEntryPage());
                     break;
             }
         }
