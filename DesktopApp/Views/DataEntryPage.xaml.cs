@@ -1,4 +1,7 @@
-﻿using DesktopApp.ViewModel;
+﻿using DesktopApp.Data;
+using DesktopApp.Model;
+using DesktopApp.ViewModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -40,5 +43,25 @@ namespace DesktopApp.Views
                 }
             }
         }
+
+        private void SaveToDatabase()
+        {
+            using var db = new AppDbContext();
+            var company = new CompanyInfo
+            {
+                CompanyName = Name_company.Text,
+                ContactNumber = contact.Text,
+                GSTIN = gstin.Text,
+                PAN = pan.Text,
+                CompanyType = type.Text
+
+            };
+
+            db.CompanyInfos.Add(company);
+            db.SaveChanges();
+
+            MessageBox.Show("Saved to database");
+        }
+
     }
 }

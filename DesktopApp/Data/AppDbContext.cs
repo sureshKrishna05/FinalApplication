@@ -1,4 +1,5 @@
-﻿using DesktopApp.Models;
+﻿using DesktopApp.Model;
+using DesktopApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -6,6 +7,7 @@ namespace DesktopApp.Data
 {
     public class AppDbContext : DbContext
     {
+        public DbSet<CompanyInfo> CompanyInfos { get; set; }
         public DbSet<Invoice> Invoices => Set<Invoice>();
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Party> Parties => Set<Party>();

@@ -60,4 +60,5 @@ namespace DesktopApp.Models
 
         public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
     }
+
 }
