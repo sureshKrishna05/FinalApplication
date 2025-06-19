@@ -11,12 +11,13 @@
              MinHeight="400">
 
     <UserControl.Resources>
-        <!-- Rounded TextBox Style -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="Template">
@@ -26,18 +27,17 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
-                            <ScrollViewer x:Name="PART_ContentHost"/>
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- Rounded Button Style -->
         <Style x:Key="RoundedButton" TargetType="Button">
             <Setter Property="Background" Value="#0A4967"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
             <Setter Property="Padding" Value="8,4"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -53,69 +53,100 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
     </UserControl.Resources>
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Top teal line -->
+        <!-- Outer container -->
+        <Border Grid.Row="1"
+                Grid.RowSpan="3"
+                Background="White"
+                BorderBrush="LightGray"
+                BorderThickness="2"
+                CornerRadius="6"
+                Margin="0,0,0,10"/>
+
+        <!-- Header Line -->
         <Border Grid.Row="0"
                 Height="2"
                 Background="#0A4967"
                 VerticalAlignment="Bottom"
                 Margin="0,0,0,10"/>
 
-        <!-- Main white panel -->
+        <!-- Main Input Block -->
+        <!-- Main Input Block -->
         <Border Grid.Row="1"
                 Background="White"
                 BorderBrush="LightGray"
                 BorderThickness="2"
-                CornerRadius="6"
-                Padding="20"
-                Margin="0,0,0,10">
-            <Grid>
+                CornerRadius="8"
+                Padding="20,20,20,0"
+                Margin="20,20,20,0"
+                Grid.RowSpan="2"
+                VerticalAlignment="Top" Height="270">
+            <Grid Margin="20,0,0,0"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Top"
+                  Width="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
 
-                <!-- Labels and Inputs -->
-                <TextBlock Text="Company Name :" Grid.Row="0" Grid.Column="0" FontWeight="DemiBold" Margin="0,0,10,10" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Height="30" Style="{StaticResource RoundedTextBoxStyle}" Margin="0,0,0,10"/>
+                <!-- Row 0 -->
+                <TextBlock Text="Company Name :" Grid.Row="0" Grid.Column="0" 
+                           FontSize="20" FontWeight="DemiBold" Margin="0,0,5,40" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource RoundedTextBoxStyle}"
+                         Height="38" Margin="160,0,100,40" x:Name="Name_company"/>
 
-                <TextBlock Text="Contact No :" Grid.Row="1" Grid.Column="0" FontWeight="DemiBold" Margin="0,0,10,10" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Height="30" Style="{StaticResource RoundedTextBoxStyle}" Margin="0,0,0,10"/>
+                <TextBlock Text="Contact Number :" Grid.Row="0" Grid.Column="3" 
+                           FontSize="20" FontWeight="DemiBold" Margin="30,0,5,40" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Style="{StaticResource RoundedTextBoxStyle}"
+                         Height="38" Margin="200,0,100,40" x:Name="contact"/>
 
-                <TextBlock Text="GSTIN :" Grid.Row="2" Grid.Column="0" FontWeight="DemiBold" Margin="0,0,10,10" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Height="30" Style="{StaticResource RoundedTextBoxStyle}" Margin="0,0,0,10"/>
+                <!-- Row 1 -->
+                <TextBlock Text="GSTIN                 :" Grid.Row="1" Grid.Column="0"
+                           FontSize="20" FontWeight="DemiBold" Margin="0,0,5,40" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource RoundedTextBoxStyle}"
+                         Height="38" Margin="160,0,100,40"/>
 
-                <TextBlock Text="Address Line 1 :" Grid.Row="3" Grid.Column="0" FontWeight="DemiBold" Margin="0,0,10,10" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Height="30" Style="{StaticResource RoundedTextBoxStyle}" Margin="0,0,0,10"/>
+                <TextBlock Text="Email ID               :" Grid.Row="1" Grid.Column="3"
+                           FontSize="20" FontWeight="DemiBold" Margin="30,0,5,40" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Style="{StaticResource RoundedTextBoxStyle}"
+                         Height="38" Margin="200,0,100,40" x:Name="mail"/>
 
-                <TextBlock Text="Address Line 2 :" Grid.Row="4" Grid.Column="0" FontWeight="DemiBold" Margin="0,0,10,10" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="4" Grid.Column="1" Height="30" Style="{StaticResource RoundedTextBoxStyle}" Margin="0,0,0,10"/>
+                <!-- Row 2 -->
+                <TextBlock Text="PAN No              :" Grid.Row="2" Grid.Column="0"
+                           FontSize="20" FontWeight="DemiBold" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource RoundedTextBoxStyle}"
+                         Height="38" Margin="160,0,100,0" x:Name="pan"/>
 
-                <TextBlock Text="City / Pincode :" Grid.Row="5" Grid.Column="0" FontWeight="DemiBold" Margin="0,0,10,10" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="5" Grid.Column="1" Height="30" Style="{StaticResource RoundedTextBoxStyle}" Margin="0,0,0,10"/>
-
-                <!-- Save Button -->
-                <Button Grid.Row="4" Grid.Column="1"
-                        Content="💾 Save"
-                        HorizontalAlignment="Right"
-                        Width="100"
-                        Style="{StaticResource RoundedButton}"/>
+                <TextBlock Text="Company Type    :" Grid.Row="2" Grid.Column="3"
+                           FontSize="20" FontWeight="DemiBold" Margin="30,0,5,0" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Style="{StaticResource RoundedTextBoxStyle}"
+                         Height="38" Margin="200,0,100,0" x:Name="type"/>
+                
+                <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" FontSize="20" Cursor="Hand"
+                        Name="Reset" Content="Reset" Style="{StaticResource RoundedButton}"
+                        Width="80" Height="30" Margin="130,10,0,0" Click="ResetButton_Click"/>
             </Grid>
+
         </Border>
     </Grid>
 </UserControl>

@@ -185,30 +185,30 @@
         <StackPanel Grid.Row="2"
             Margin="20,50,20,0">
             <TextBlock Text="Recent Orders"
-               FontSize="16"
-               FontWeight="SemiBold"
-               Foreground="Gray"
-               Margin="0,0,0,10"/>
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       Foreground="Gray"
+                       Margin="0,0,0,10"/>
 
             <Border CornerRadius="6"
-            BorderBrush="LightGray"
-            BorderThickness="1"
-            SnapsToDevicePixels="True"
-            Background="White">
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    SnapsToDevicePixels="True"
+                    Background="White">
                 <DataGrid AutoGenerateColumns="False"
-                  HeadersVisibility="Column"
-                  CanUserAddRows="False"
-                  Height="250"
-                  BorderThickness="0"
-                  Background="White"
-                  GridLinesVisibility="Horizontal"
-                  RowBackground="White"
-                  AlternatingRowBackground="#F9F9F9"
-                  RowHeaderWidth="0"
-                  HorizontalGridLinesBrush="#B5D2DB"
-                  VerticalGridLinesBrush="#B5D2DB"
-                  FontSize="14"
-                  Padding="5">
+                          HeadersVisibility="Column"
+                          CanUserAddRows="False"
+                          Height="250"
+                          BorderThickness="0"
+                          Background="White"
+                          GridLinesVisibility="Horizontal"
+                          RowBackground="White"
+                          AlternatingRowBackground="#F9F9F9"
+                          RowHeaderWidth="0"
+                          HorizontalGridLinesBrush="#B5D2DB"
+                          VerticalGridLinesBrush="#B5D2DB"
+                          FontSize="14"
+                          Padding="5">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Order" Binding="{Binding Order}" Width="*" />
                         <DataGridTextColumn Header="Party" Binding="{Binding Party}" Width="*" />
