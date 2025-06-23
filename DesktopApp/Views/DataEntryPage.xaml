@@ -82,14 +82,51 @@
         <!-- Main Input Block -->
         <!-- Main Input Block -->
         <Border Grid.Row="1"
+                Margin="0,0,0,0">
+            <Grid Margin="0,0,0,0"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20" />
+                    <!-- spacing between buttons -->
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Column="1" Grid.Row="1"
+                        Width="250" Height="45"
+                        Content="ADD COMPANY"
+                        Style="{StaticResource RoundedButton}" x:Name="Add"
+                        FontSize="20" FontWeight="SemiBold" Cursor="Hand"
+                        Click="AddCompanyClick" Command="{Binding AddCompanyCommand}"/>
+
+                <Button Grid.Column="3" Grid.Row="1"
+                        Width="250" Height="45"
+                        Content="EDIT COMPANY"
+                        Style="{StaticResource RoundedButton}" x:Name="Edit"
+                        Foreground="#0A4967" Background="#E9E9E9"
+                        FontSize="20" FontWeight="SemiBold" Cursor="Hand"
+                        Click="EditCompanyClick" Command="{Binding EditCompanyCommand}"/>
+
+            </Grid>
+
+        </Border>
+        
+        <Border Grid.Row="1"
                 Background="White"
                 BorderBrush="LightGray"
                 BorderThickness="2"
                 CornerRadius="8"
-                Padding="20,20,20,0"
-                Margin="0,20,0,0"
+                Padding="20,40,20,0"
+                Margin="0,80,0,0"
                 Grid.RowSpan="2"
-                VerticalAlignment="Top" Height="270">
+                VerticalAlignment="Top" Height="300">
             <Grid Margin="20,0,0,0"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Top"
@@ -114,6 +151,15 @@
                            FontSize="20" FontWeight="DemiBold" Margin="0,0,5,40" VerticalAlignment="Center"/>
                 <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource RoundedTextBoxStyle}"
                          Height="38" Margin="160,0,100,40" x:Name="Name_company" Text="{Binding CompanyName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!-- ComboBox for Edit Company -->
+                <ComboBox x:Name="Combo_company"
+                          Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                          Height="38" Margin="160,0,100,40"
+                          ItemsSource="{Binding CompanyNames}"
+                          SelectedItem="{Binding SelectedCompany}"
+                          DisplayMemberPath="CompanyName"
+                          Visibility="Collapsed"/>
 
                 <TextBlock Text="Contact Number :" Grid.Row="0" Grid.Column="3" 
                            FontSize="20" FontWeight="DemiBold" Margin="30,0,5,40" VerticalAlignment="Center"/>
@@ -144,17 +190,17 @@
                 
                 <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" FontSize="20"  Cursor="Hand"
                         Name="Reset" Content="RESET" Style="{StaticResource RoundedButton}"
-                        Width="100" Height="35" Margin="130,10,0,0" />
+                        Width="100" Height="35" Margin="130,20,0,0" />
             </Grid>
 
         </Border>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,310,0,20">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,260,0,50">
             <!-- Address Block -->
             <Border Background="White"
                     BorderBrush="LightGray"
                     BorderThickness="2"
-                    Margin="0,0,10,50"
+                    Margin="0,100,10,50"
                     CornerRadius="8"
                     Padding="40,20,0,0"
                     Width="805">
@@ -195,7 +241,7 @@
             <Border Background="White"
                     BorderBrush="LightGray"
                     BorderThickness="2"
-                    Margin="10,0,0,50"
+                    Margin="10,100,0,50"
                     CornerRadius="8"
                     Padding="40,20,0,0"
                     Width="805">
@@ -227,7 +273,7 @@
             </Border>
         </StackPanel>
         
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,900,0,0">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,820,0,0">
             <Button Content="SAVE"
                 Width="100"
                 Height="40"

@@ -1,7 +1,9 @@
 ﻿using DesktopApp.Data;
 using DesktopApp.Model;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,7 +11,7 @@ namespace DesktopApp.ViewModel
 {
     public class DataEntryViewModel : INotifyPropertyChanged
     {
-        // Private fields
+        // Fields
         private string _companyName = string.Empty;
         private string _contactNumber = string.Empty;
         private string _gstin = string.Empty;
@@ -24,7 +26,22 @@ namespace DesktopApp.ViewModel
         private string _website = string.Empty;
         private double _discount;
 
-        // Public properties
+        private string _selectedCompany = string.Empty;
+
+        // Properties
+        public ObservableCollection<string> CompanyNames { get; set; } = new();
+
+        public string SelectedCompany
+        {
+            get => _selectedCompany;
+            set
+            {
+                _selectedCompany = value;
+                OnPropertyChanged(nameof(SelectedCompany));
+                LoadCompanyDetails(_selectedCompany);
+            }
+        }
+
         public string CompanyName
         {
             get => _companyName;
@@ -112,6 +129,43 @@ namespace DesktopApp.ViewModel
         {
             SaveCommand = new RelayCommand(SaveData, CanSave);
             ResetCommand = new RelayCommand(_ => ResetData());
+
+            LoadCompanyNames(); // Populate ComboBox
+        }
+
+        // Load list of company names
+        private void LoadCompanyNames()
+        {
+            using var db = new AppDbContext();
+            var names = db.CompanyInfos.Select(c => c.CompanyName).Distinct().ToList();
+            CompanyNames.Clear();
+            foreach (var name in names)
+                CompanyNames.Add(name);
+        }
+
+        // Load data when ComboBox changes
+        private void LoadCompanyDetails(string companyName)
+        {
+            if (string.IsNullOrWhiteSpace(companyName)) return;
+
+            using var db = new AppDbContext();
+            var company = db.CompanyInfos.FirstOrDefault(c => c.CompanyName == companyName);
+            if (company != null)
+            {
+                CompanyName = company.CompanyName;
+                ContactNumber = company.ContactNumber;
+                GSTIN = company.GSTIN;
+                PAN = company.PAN;
+                Email = company.Email;
+                CompanyType = company.CompanyType;
+                AddressLine1 = company.AddressLine1;
+                AddressLine2 = company.AddressLine2;
+                AddressLine3 = company.AddressLine3;
+                ZipCode = company.ZipCode;
+                NickName = company.NickName;
+                Website = company.Website;
+                Discount = company.Discount;
+            }
         }
 
         // Save Logic
@@ -120,23 +174,50 @@ namespace DesktopApp.ViewModel
             try
             {
                 using var db = new AppDbContext();
-                var company = new CompanyInfo
+
+                // Try to find the existing company
+                var existing = db.CompanyInfos.FirstOrDefault(c => c.CompanyName == CompanyName);
+
+                if (existing != null)
                 {
-                    CompanyName = CompanyName,
-                    ContactNumber = ContactNumber,
-                    GSTIN = GSTIN,
-                    PAN = PAN,
-                    Email = Email,
-                    CompanyType = CompanyType,
-                    AddressLine1 = AddressLine1,
-                    AddressLine2 = AddressLine2,
-                    AddressLine3 = AddressLine3,
-                    ZipCode = ZipCode,
-                    NickName = NickName,
-                    Website = Website,
-                    Discount = Discount
-                };
-                db.CompanyInfos.Add(company);
+                    // Update existing fields
+                    existing.ContactNumber = ContactNumber;
+                    existing.GSTIN = GSTIN;
+                    existing.PAN = PAN;
+                    existing.Email = Email;
+                    existing.CompanyType = CompanyType;
+                    existing.AddressLine1 = AddressLine1;
+                    existing.AddressLine2 = AddressLine2;
+                    existing.AddressLine3 = AddressLine3;
+                    existing.ZipCode = ZipCode;
+                    existing.NickName = NickName;
+                    existing.Website = Website;
+                    existing.Discount = Discount;
+
+                    db.Update(existing); // optional, EF usually tracks automatically
+                }
+                else
+                {
+                    // New entry
+                    var company = new CompanyInfo
+                    {
+                        CompanyName = CompanyName,
+                        ContactNumber = ContactNumber,
+                        GSTIN = GSTIN,
+                        PAN = PAN,
+                        Email = Email,
+                        CompanyType = CompanyType,
+                        AddressLine1 = AddressLine1,
+                        AddressLine2 = AddressLine2,
+                        AddressLine3 = AddressLine3,
+                        ZipCode = ZipCode,
+                        NickName = NickName,
+                        Website = Website,
+                        Discount = Discount
+                    };
+                    db.CompanyInfos.Add(company);
+                }
+
                 db.SaveChanges();
                 MessageBox.Show("Saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -169,7 +250,7 @@ namespace DesktopApp.ViewModel
             Discount = 0;
         }
 
-        // INotifyPropertyChanged Implementation
+        // INotifyPropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
