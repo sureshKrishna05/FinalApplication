@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +10,9 @@ namespace DesktopApp.Model
 {
     public class CompanyInfo
     {
-
-            public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
             public string CompanyName { get; set; } = string.Empty;
             public string ContactNumber { get; set; } = string.Empty;
             public string GSTIN { get; set; } = string.Empty;

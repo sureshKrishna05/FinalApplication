@@ -61,4 +61,8 @@
     <Resource Include="Assets\tgBtn_MouseOver.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
