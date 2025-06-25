@@ -174,52 +174,27 @@ namespace DesktopApp.ViewModel
             try
             {
                 using var db = new AppDbContext();
-
-                // Try to find the existing company
-                var existing = db.CompanyInfos.FirstOrDefault(c => c.CompanyName == CompanyName);
-
-                if (existing != null)
+                var company = new CompanyInfo
                 {
-                    // Update existing fields
-                    existing.ContactNumber = ContactNumber;
-                    existing.GSTIN = GSTIN;
-                    existing.PAN = PAN;
-                    existing.Email = Email;
-                    existing.CompanyType = CompanyType;
-                    existing.AddressLine1 = AddressLine1;
-                    existing.AddressLine2 = AddressLine2;
-                    existing.AddressLine3 = AddressLine3;
-                    existing.ZipCode = ZipCode;
-                    existing.NickName = NickName;
-                    existing.Website = Website;
-                    existing.Discount = Discount;
-
-                    db.Update(existing); // optional, EF usually tracks automatically
-                }
-                else
-                {
-                    // New entry
-                    var company = new CompanyInfo
-                    {
-                        CompanyName = CompanyName,
-                        ContactNumber = ContactNumber,
-                        GSTIN = GSTIN,
-                        PAN = PAN,
-                        Email = Email,
-                        CompanyType = CompanyType,
-                        AddressLine1 = AddressLine1,
-                        AddressLine2 = AddressLine2,
-                        AddressLine3 = AddressLine3,
-                        ZipCode = ZipCode,
-                        NickName = NickName,
-                        Website = Website,
-                        Discount = Discount
-                    };
-                    db.CompanyInfos.Add(company);
-                }
-
+                    CompanyName = CompanyName,
+                    ContactNumber = ContactNumber,
+                    GSTIN = GSTIN,
+                    PAN = PAN,
+                    Email = Email,
+                    CompanyType = CompanyType,
+                    AddressLine1 = AddressLine1,
+                    AddressLine2 = AddressLine2,
+                    AddressLine3 = AddressLine3,
+                    ZipCode = ZipCode,
+                    NickName = NickName,
+                    Website = Website,
+                    Discount = Discount
+                };
+                db.CompanyInfos.Add(company);
                 db.SaveChanges();
                 MessageBox.Show("Saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                LoadCompanyNames(); // Refresh dropdown
             }
             catch (Exception ex)
             {

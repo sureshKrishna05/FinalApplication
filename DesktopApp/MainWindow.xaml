@@ -41,6 +41,28 @@
                     Value="20"/>
         </Style>
 
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Background" Value="#31708E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bor" CornerRadius="10" 
+                                Cursor="{TemplateBinding Cursor}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
         <!--// Tooltip Style Template //-->
 
         <Style TargetType="ToolTip" x:Key="tt_style">
@@ -577,6 +599,7 @@
                                                     </MultiTrigger.Conditions>
                                                     <Setter Property="Background" TargetName="Bd" Value="#0A4967"/>
                                                     <Setter Property="BorderBrush" TargetName="Bd" Value="#0A4967"/>
+                                                    <Setter Property="Cursor" TargetName="Bd" Value="Hand"/>
                                                 </MultiTrigger>
 
                                                 <!-- Selected Trigger -->
@@ -598,9 +621,27 @@
                         </ListView.ItemContainerStyle>
 
                     </ListView>
-
                 </StackPanel>
 
+
+                <Grid Height="90" VerticalAlignment="Bottom" Margin="5,410,5,0">
+                    <Border Name="line" Background="#E9E9E9" 
+                            Height="1" VerticalAlignment="Top"/>
+                    <Button x:Name="Login"
+                            Height="50"
+                            Style="{StaticResource RoundedButton}"
+                            BorderBrush="#E9E9E9"
+                            BorderThickness="1"
+                            Background="Transparent"
+                            FontSize="20"
+                            Cursor="Hand"
+                            Click="LoginBtnClick">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image x:Name="loginImage" Source="/Assets/login.png" Width="24" Height="24" Margin="0,0,20,0"/>
+                            <TextBlock x:Name="loginText" Text="Login" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
             </Grid>
 

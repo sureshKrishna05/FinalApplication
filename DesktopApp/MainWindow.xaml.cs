@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -124,6 +125,36 @@ namespace DesktopApp
                 LoadPage(pageTag);
             }
         }
+
+        private void LoginBtnClick(object sender, RoutedEventArgs e)
+        {
+            SetSelectedButton(Login);
+
+            var imagePath = "pack://application:,,,/Assets/login2.png";
+            // Set background and foreground colors
+            Login.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E9E9E9"));
+            loginText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#565656"));
+
+            // Set new image source properly
+            loginImage.Source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
+            MessageBox.Show("Button Clicked");
+        }
+        private void SetSelectedButton(Button selected)
+        {
+            // Remove shadow from all buttons first
+            Login.Effect = null;
+
+            // Add shadow to selected one
+            selected.Effect = new DropShadowEffect
+            {
+                Color = Colors.Black,
+                Direction = 320,
+                ShadowDepth = 5,
+                Opacity = 0.5,
+                BlurRadius = 10
+            };
+        }
+
 
 
     }
