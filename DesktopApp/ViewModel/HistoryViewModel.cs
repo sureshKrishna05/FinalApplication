@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace DesktopApp.ViewModel
 {
-    public class BillingViewModel : INotifyPropertyChanged
+    public class HistoryViewModel : INotifyPropertyChanged
     {
         private string _partyName = string.Empty;
         private string _invoiceNo = string.Empty;
@@ -51,7 +51,7 @@ namespace DesktopApp.ViewModel
 
         public ICommand SearchCommand { get; }
 
-        public BillingViewModel()
+        public HistoryViewModel()
         {
             SearchCommand = new RelayCommand(ExecuteSearch);
         }

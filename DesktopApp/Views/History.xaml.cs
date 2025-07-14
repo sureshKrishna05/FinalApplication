@@ -19,12 +19,12 @@ namespace DesktopApp.Views
     /// <summary>
     /// Interaction logic for Billing.xaml
     /// </summary>
-    public partial class Billing : UserControl
+    public partial class History: UserControl
     {
-        public Billing()
+        public History()
         {
             InitializeComponent();
-            DataContext = new BillingItemViewModel();
+            DataContext = new HistoryViewModel();
         }
     }
 }

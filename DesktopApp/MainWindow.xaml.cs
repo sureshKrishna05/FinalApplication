@@ -24,8 +24,10 @@ namespace DesktopApp
     public partial class MainWindow : Window
     {
         Dashboard dash = new Dashboard();
-        Billing bill = new Billing();
+        History his = new History();
         DataEntryPage dta = new DataEntryPage();
+        Billing bill = new Billing();
+
         public MainWindow()
         {
 
@@ -106,8 +108,8 @@ namespace DesktopApp
                 case "History":
                     contentArea.Children.Clear();
                     GridText("Order History");
-                    bill.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    contentArea.Children.Add(new Views.Billing());
+                    his.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    contentArea.Children.Add(new Views.History());
                     break;
 
                 case "Invoice":
@@ -115,6 +117,13 @@ namespace DesktopApp
                     GridText("Test");
                     dta.HorizontalAlignment = HorizontalAlignment.Stretch;
                     contentArea.Children.Add(new Views.DataEntryPage());
+                    break;
+
+                case "Billing":
+                    contentArea.Children.Clear();
+                    GridText("Billing");
+                    bill.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    contentArea.Children.Add(new Views.Billing());
                     break;
             }
         }
