@@ -102,28 +102,28 @@ namespace DesktopApp
                     contentArea.Children.Clear();
                     GridText("DashBoard");
                     dash.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                    contentArea.Children.Add(new Views.Dashboard());
+                    contentArea.Children.Add(dash);
                     break;
 
                 case "History":
                     contentArea.Children.Clear();
                     GridText("Order History");
                     his.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    contentArea.Children.Add(new Views.History());
+                    contentArea.Children.Add(his);
                     break;
 
                 case "Invoice":
                     contentArea.Children.Clear();
                     GridText("Test");
                     dta.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    contentArea.Children.Add(new Views.DataEntryPage());
+                    contentArea.Children.Add(dta);
                     break;
 
                 case "Billing":
                     contentArea.Children.Clear();
                     GridText("Billing");
                     bill.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    contentArea.Children.Add(new Views.Billing());
+                    contentArea.Children.Add(bill);
                     break;
             }
         }

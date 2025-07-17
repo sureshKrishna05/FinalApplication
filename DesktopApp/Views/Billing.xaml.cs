@@ -24,7 +24,7 @@ namespace DesktopApp.Views
         public Billing()
         {
             InitializeComponent();
-            DataContext = new BillingItemViewModel();
+            DataContext = new BillingViewModel();
         }
     }
 }

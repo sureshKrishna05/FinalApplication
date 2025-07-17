@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DesktopApp.ViewModel
 {
-    public class BillingItemViewModel
+    public class BillingViewModel
     {
         public bool IsVisible { get; set; } = false;
         public string Product { get; set; } = string.Empty;
