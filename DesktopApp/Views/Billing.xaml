@@ -87,20 +87,20 @@
                             </ToggleButton>
 
                             <Popup x:Name="Popup"
-                           Placement="Bottom"
-                           IsOpen="{TemplateBinding IsDropDownOpen}"
-                           AllowsTransparency="True"
-                           Focusable="False"
-                           PopupAnimation="Slide">
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
                                 <Grid x:Name="DropDown"
-                              SnapsToDevicePixels="True"
-                              MinWidth="{TemplateBinding ActualWidth}"
-                              MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                     <Border x:Name="DropDownBorder"
-                                    BorderThickness="1"
-                                    CornerRadius="5"
-                                    Background="White"
-                                    BorderBrush="#DDDDDD">
+                                            BorderThickness="1"
+                                            CornerRadius="5"
+                                            Background="White"
+                                            BorderBrush="#DDDDDD">
                                         <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
                                             <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                         </ScrollViewer>
@@ -202,10 +202,21 @@
         <Border Grid.Row="0" Background="#0A4967" Height="2" Margin="0,0,0,15"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
-            <Button Content="Selling Bills" Width="250" Height="45" FontSize="16" Style="{StaticResource RoundedButton}" Margin="10,0"/>
-            <Button Content="Purchase Bills" Width="250" Height="45" FontSize="16" Style="{StaticResource RoundedButton}" Background="#E9E9E9" Foreground="#0A4967" Margin="10,0"/>
-        </StackPanel>
+            <Button x:Name="SellingBillsButton" 
+            Content="Selling Bills" 
+            Width="250" Height="45" FontSize="16" 
+            Style="{StaticResource RoundedButton}" 
+            Margin="10,0"
+            Click="SellingBillsButton_Click"/>
 
+            <Button x:Name="PurchaseBillsButton" 
+            Content="Purchase Bills" 
+            Width="250" Height="45" FontSize="16" 
+            Style="{StaticResource RoundedButton}" 
+            Background="#E9E9E9" Foreground="#0A4967" 
+            Margin="10,0"
+            Click="PurchaseBillsButton_Click"/>
+        </StackPanel>
         <Border Grid.Row="2" Background="White" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,15">
             <Grid>
                 <Grid.RowDefinitions>

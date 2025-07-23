@@ -7,6 +7,9 @@ namespace DesktopApp.Data
     {
         public DbSet<CompanyInfo> CompanyInfos { get; set; }
 
+        // --- ADD THIS LINE ---
+        public DbSet<ProductInfo> Products { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=K:\\Source Code\\DesktopApp\\DesktopApp\\billing.db");

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices; // Required for CallerMemberName
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,18 +13,36 @@ namespace DesktopApp.ViewModel
     /// </summary>
     public class BillingItem : INotifyPropertyChanged
     {
-        public string ProductName { get; set; } = string.Empty;
-        public string BatchNo { get; set; } = string.Empty;
-        public string Hsn { get; set; } = string.Empty;
-        public string Pac { get; set; } = string.Empty;
-        public int Quantity { get; set; }
-        public string Fr { get; set; } = string.Empty;
-        public string Exp { get; set; } = string.Empty;
-        public decimal Mrp { get; set; }
-        public decimal Ptr { get; set; }
-        public decimal Value { get; set; }
+        // Backing fields for properties
+        private string _productName = string.Empty;
+        private string _batchNo = string.Empty;
+        private string _hsn = string.Empty;
+        private string _pac = string.Empty;
+        private int _quantity;
+        private string _fr = string.Empty;
+        private string _exp = string.Empty;
+        private decimal _mrp;
+        private decimal _ptr;
+        private decimal _value;
 
+        // Public properties that the UI binds to
+        public string ProductName { get => _productName; set { _productName = value; OnPropertyChanged(); } }
+        public string BatchNo { get => _batchNo; set { _batchNo = value; OnPropertyChanged(); } }
+        public string Hsn { get => _hsn; set { _hsn = value; OnPropertyChanged(); } }
+        public string Pac { get => _pac; set { _pac = value; OnPropertyChanged(); } }
+        public int Quantity { get => _quantity; set { _quantity = value; OnPropertyChanged(); } }
+        public string Fr { get => _fr; set { _fr = value; OnPropertyChanged(); } }
+        public string Exp { get => _exp; set { _exp = value; OnPropertyChanged(); } }
+        public decimal Mrp { get => _mrp; set { _mrp = value; OnPropertyChanged(); } }
+        public decimal Ptr { get => _ptr; set { _ptr = value; OnPropertyChanged(); } }
+        public decimal Value { get => _value; set { _value = value; OnPropertyChanged(); } }
+
+        // INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     /// <summary>
@@ -31,6 +50,8 @@ namespace DesktopApp.ViewModel
     /// </summary>
     public class BillingViewModel : INotifyPropertyChanged
     {
+        // The rest of your BillingViewModel class remains exactly the same.
+        // ...
         #region Collections for UI
         public ObservableCollection<BillingItem> InvoiceItems { get; set; }
         public ObservableCollection<string> CompanyNames { get; set; }
@@ -38,7 +59,6 @@ namespace DesktopApp.ViewModel
         #endregion
 
         #region Properties for Data Binding
-        // FIX: Initialize string fields to avoid nullable warnings.
         private string _selectedCompany = string.Empty;
         public string SelectedCompany
         {
@@ -46,7 +66,6 @@ namespace DesktopApp.ViewModel
             set { _selectedCompany = value; OnPropertyChanged(nameof(SelectedCompany)); }
         }
 
-        // FIX: Initialize string fields to avoid nullable warnings.
         private string _newProduct = string.Empty;
         public string NewProduct
         {
@@ -88,7 +107,6 @@ namespace DesktopApp.ViewModel
             MedicineList = new ObservableCollection<string>();
             InvoiceItems.CollectionChanged += (s, e) => UpdateInvoiceSummary();
 
-            // FIX: Adapt parameterless methods to the RelayCommand constructor using a lambda expression.
             AddToInvoiceCommand = new RelayCommand(_ => AddToInvoice(), _ => CanAddToInvoice());
             ClearInvoiceCommand = new RelayCommand(_ => ClearInvoice());
             PrintInvoiceCommand = new RelayCommand(_ => PrintInvoice());
@@ -124,7 +142,6 @@ namespace DesktopApp.ViewModel
 
             InvoiceItems.Add(newItem);
 
-            // FIX: Set to string.Empty instead of null.
             NewProduct = string.Empty;
             NewQty = 1;
         }
@@ -147,7 +164,6 @@ namespace DesktopApp.ViewModel
         private void ClearInvoice()
         {
             InvoiceItems.Clear();
-            // FIX: Set to string.Empty instead of null.
             SelectedCompany = string.Empty;
         }
 
