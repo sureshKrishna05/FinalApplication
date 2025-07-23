@@ -203,20 +203,21 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
             <Button x:Name="SellingBillsButton" 
-            Content="Selling Bills" 
-            Width="250" Height="45" FontSize="16" 
-            Style="{StaticResource RoundedButton}" 
-            Margin="10,0"
-            Click="SellingBillsButton_Click"/>
+                    Content="Selling Bills" 
+                    Width="250" Height="45" FontSize="16" 
+                    Style="{StaticResource RoundedButton}" 
+                    Margin="10,0"
+                    Click="SellingBillsButton_Click"/>
 
             <Button x:Name="PurchaseBillsButton" 
-            Content="Purchase Bills" 
-            Width="250" Height="45" FontSize="16" 
-            Style="{StaticResource RoundedButton}" 
-            Background="#E9E9E9" Foreground="#0A4967" 
-            Margin="10,0"
-            Click="PurchaseBillsButton_Click"/>
+                    Content="Purchase Bills" 
+                    Width="250" Height="45" FontSize="16" 
+                    Style="{StaticResource RoundedButton}" 
+                    Background="#E9E9E9" Foreground="#0A4967" 
+                    Margin="10,0"
+                    Click="PurchaseBillsButton_Click"/>
         </StackPanel>
+
         <Border Grid.Row="2" Background="White" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,15">
             <Grid>
                 <Grid.RowDefinitions>
@@ -228,7 +229,7 @@
                     <TextBlock Text="Select Client" Margin="0,0,0,5" FontWeight="SemiBold"/>
                     <ComboBox ItemsSource="{Binding CompanyNames}"
                               SelectedItem="{Binding SelectedCompany}"
-                              Height="40"
+                              DisplayMemberPath="CompanyName" Height="40"
                               Margin="0,0,0,15"
                               Style="{StaticResource RoundedComboBoxStyle}" />
                 </StackPanel>
@@ -244,7 +245,7 @@
                         <TextBlock Text="Select Medicine" Margin="0,0,0,5" FontWeight="SemiBold"/>
                         <ComboBox ItemsSource="{Binding MedicineList}"
                                   SelectedItem="{Binding NewProduct}"
-                                  Height="40"
+                                  DisplayMemberPath="ProductName" Height="40"
                                   Style="{StaticResource RoundedComboBoxStyle}"/>
                     </StackPanel>
 
@@ -275,8 +276,8 @@
                 </Grid.RowDefinitions>
 
                 <ListView Grid.Row="0" 
-              ItemsSource="{Binding InvoiceItems}" 
-              Style="{StaticResource ModernListViewStyle}">
+                          ItemsSource="{Binding InvoiceItems}" 
+                          Style="{StaticResource ModernListViewStyle}">
                     <ListView.View>
                         <GridView>
                             <GridView.ColumnHeaderContainerStyle>
@@ -296,6 +297,7 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
+
                 <Grid Grid.Row="1" Margin="0,15,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

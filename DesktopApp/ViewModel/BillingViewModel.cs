@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DesktopApp.Data;
+using DesktopApp.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices; // Required for CallerMemberName
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
@@ -37,7 +39,6 @@ namespace DesktopApp.ViewModel
         public decimal Ptr { get => _ptr; set { _ptr = value; OnPropertyChanged(); } }
         public decimal Value { get => _value; set { _value = value; OnPropertyChanged(); } }
 
-        // INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
@@ -50,24 +51,22 @@ namespace DesktopApp.ViewModel
     /// </summary>
     public class BillingViewModel : INotifyPropertyChanged
     {
-        // The rest of your BillingViewModel class remains exactly the same.
-        // ...
         #region Collections for UI
         public ObservableCollection<BillingItem> InvoiceItems { get; set; }
-        public ObservableCollection<string> CompanyNames { get; set; }
-        public ObservableCollection<string> MedicineList { get; set; }
+        public ObservableCollection<CompanyInfo> CompanyNames { get; set; }
+        public ObservableCollection<ProductInfo> MedicineList { get; set; }
         #endregion
 
         #region Properties for Data Binding
-        private string _selectedCompany = string.Empty;
-        public string SelectedCompany
+        private CompanyInfo? _selectedCompany;
+        public CompanyInfo? SelectedCompany
         {
             get => _selectedCompany;
             set { _selectedCompany = value; OnPropertyChanged(nameof(SelectedCompany)); }
         }
 
-        private string _newProduct = string.Empty;
-        public string NewProduct
+        private ProductInfo? _newProduct;
+        public ProductInfo? NewProduct
         {
             get => _newProduct;
             set { _newProduct = value; OnPropertyChanged(nameof(NewProduct)); }
@@ -103,8 +102,8 @@ namespace DesktopApp.ViewModel
         public BillingViewModel()
         {
             InvoiceItems = new ObservableCollection<BillingItem>();
-            CompanyNames = new ObservableCollection<string>();
-            MedicineList = new ObservableCollection<string>();
+            CompanyNames = new ObservableCollection<CompanyInfo>();
+            MedicineList = new ObservableCollection<ProductInfo>();
             InvoiceItems.CollectionChanged += (s, e) => UpdateInvoiceSummary();
 
             AddToInvoiceCommand = new RelayCommand(_ => AddToInvoice(), _ => CanAddToInvoice());
@@ -116,39 +115,60 @@ namespace DesktopApp.ViewModel
 
         private void LoadInitialData()
         {
-            CompanyNames.Add("BALAJI OPTICALS");
-            CompanyNames.Add("MedCare Hospital");
-            MedicineList.Add("DEWMAT GEL");
-            MedicineList.Add("DEWMAT");
-            MedicineList.Add("MATMOX DM");
-            MedicineList.Add("Paracetamol 500mg");
+            CompanyNames.Clear();
+            MedicineList.Clear();
+            try
+            {
+                using (var db = new AppDbContext())
+                {
+                    // Load companies from the database
+                    var companies = db.CompanyInfos.ToList();
+                    foreach (var company in companies)
+                    {
+                        CompanyNames.Add(company);
+                    }
+
+                    // Load products from the database
+                    var products = db.Products.ToList();
+                    foreach (var product in products)
+                    {
+                        MedicineList.Add(product);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading data from database: {ex.Message}\n\nHave you run the migrations?", "Database Error");
+            }
         }
 
         private void AddToInvoice()
         {
+            if (NewProduct == null) return; // Safety check
+
             var newItem = new BillingItem
             {
-                ProductName = this.NewProduct,
+                ProductName = this.NewProduct.ProductName,
                 Quantity = this.NewQty,
-                BatchNo = "BATCH001",
-                Hsn = "300490",
-                Pac = "10ML",
-                Fr = "7",
-                Exp = "09/26",
-                Mrp = 140.00m,
-                Ptr = 108.00m,
-                Value = this.NewQty * 108.00m
+                BatchNo = this.NewProduct.BatchNo ?? "N/A",
+                Hsn = this.NewProduct.HSNCode ?? "N/A",
+                Pac = this.NewProduct.Packaging ?? "N/A",
+                Exp = this.NewProduct.ExpiryDate ?? "N/A",
+                Mrp = this.NewProduct.MRP,
+                Ptr = this.NewProduct.PTR,
+                Value = this.NewQty * this.NewProduct.PTR, // Value = Qty * PTR
+                Fr = "N/A" // Placeholder
             };
 
             InvoiceItems.Add(newItem);
 
-            NewProduct = string.Empty;
+            NewProduct = null;
             NewQty = 1;
         }
 
         private bool CanAddToInvoice()
         {
-            return !string.IsNullOrEmpty(NewProduct) && NewQty > 0;
+            return NewProduct != null && NewQty > 0;
         }
 
         private void UpdateInvoiceSummary()
@@ -164,7 +184,7 @@ namespace DesktopApp.ViewModel
         private void ClearInvoice()
         {
             InvoiceItems.Clear();
-            SelectedCompany = string.Empty;
+            SelectedCompany = null;
         }
 
         private void PrintInvoice()
