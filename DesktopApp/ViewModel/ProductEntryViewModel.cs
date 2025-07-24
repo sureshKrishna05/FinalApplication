@@ -12,63 +12,36 @@ namespace DesktopApp.ViewModel
     public class ProductEntryViewModel : INotifyPropertyChanged
     {
         #region Fields & Properties
+        // This field will track the ID of the product being edited.
+        // If it's 0, we are in "Add" mode. Otherwise, we are in "Edit" mode.
+        private int _editingProductId = 0;
+
         private string _productName = string.Empty;
-        public string ProductName
-        {
-            get => _productName;
-            set { _productName = value; OnPropertyChanged(nameof(ProductName)); }
-        }
+        public string ProductName { get => _productName; set { _productName = value; OnPropertyChanged(nameof(ProductName)); } }
 
         private string _batchNo = string.Empty;
-        public string BatchNo
-        {
-            get => _batchNo;
-            set { _batchNo = value; OnPropertyChanged(nameof(BatchNo)); }
-        }
+        public string BatchNo { get => _batchNo; set { _batchNo = value; OnPropertyChanged(nameof(BatchNo)); } }
 
         private string _hsnCode = string.Empty;
-        public string HSNCode
-        {
-            get => _hsnCode;
-            set { _hsnCode = value; OnPropertyChanged(nameof(HSNCode)); }
-        }
+        public string HSNCode { get => _hsnCode; set { _hsnCode = value; OnPropertyChanged(nameof(HSNCode)); } }
 
         private string _packaging = string.Empty;
-        public string Packaging
-        {
-            get => _packaging;
-            set { _packaging = value; OnPropertyChanged(nameof(Packaging)); }
-        }
+        public string Packaging { get => _packaging; set { _packaging = value; OnPropertyChanged(nameof(Packaging)); } }
 
         private int _stockQuantity;
-        public int StockQuantity
-        {
-            get => _stockQuantity;
-            set { _stockQuantity = value; OnPropertyChanged(nameof(StockQuantity)); }
-        }
+        public int StockQuantity { get => _stockQuantity; set { _stockQuantity = value; OnPropertyChanged(nameof(StockQuantity)); } }
 
         private string _expiryDate = string.Empty;
-        public string ExpiryDate
-        {
-            get => _expiryDate;
-            set { _expiryDate = value; OnPropertyChanged(nameof(ExpiryDate)); }
-        }
+        public string ExpiryDate { get => _expiryDate; set { _expiryDate = value; OnPropertyChanged(nameof(ExpiryDate)); } }
 
         private decimal _mrp;
-        public decimal MRP
-        {
-            get => _mrp;
-            set { _mrp = value; OnPropertyChanged(nameof(MRP)); }
-        }
+        public decimal MRP { get => _mrp; set { _mrp = value; OnPropertyChanged(nameof(MRP)); } }
 
         private decimal _ptr;
-        public decimal PTR
-        {
-            get => _ptr;
-            set { _ptr = value; OnPropertyChanged(nameof(PTR)); }
-        }
+        public decimal PTR { get => _ptr; set { _ptr = value; OnPropertyChanged(nameof(PTR)); } }
 
         public ObservableCollection<ProductInfo> Products { get; set; }
+
         private ProductInfo? _selectedProduct;
         public ProductInfo? SelectedProduct
         {
@@ -76,7 +49,11 @@ namespace DesktopApp.ViewModel
             set
             {
                 _selectedProduct = value;
-                if (value != null) LoadProductDetails(value);
+                // When a product is selected from the ComboBox, load its details.
+                if (value != null)
+                {
+                    LoadProductDetails(value);
+                }
                 OnPropertyChanged(nameof(SelectedProduct));
             }
         }
@@ -98,27 +75,22 @@ namespace DesktopApp.ViewModel
         private void LoadProducts()
         {
             Products.Clear();
-            try
+            using (var db = new AppDbContext())
             {
-                using (var db = new AppDbContext())
+                var products = db.Products.ToList();
+                foreach (var p in products)
                 {
-                    var products = db.Products.ToList();
-                    foreach (var p in products)
-                    {
-                        Products.Add(p);
-                    }
+                    Products.Add(p);
                 }
-            }
-            catch (Exception ex)
-            {
-                // This might happen if the migration hasn't been run yet.
-                // It's okay to ignore here as the list will just be empty.
-                System.Diagnostics.Debug.WriteLine($"Error loading products: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Populates the form fields with the data of the selected product for editing.
+        /// </summary>
         private void LoadProductDetails(ProductInfo product)
         {
+            _editingProductId = product.Id; // Store the ID, indicating we are in "Edit" mode.
             ProductName = product.ProductName;
             BatchNo = product.BatchNo ?? "";
             HSNCode = product.HSNCode ?? "";
@@ -129,9 +101,8 @@ namespace DesktopApp.ViewModel
             PTR = product.PTR;
         }
 
-        // --- IMPLEMENTATION ---
         /// <summary>
-        /// Saves the new product data to the database.
+        /// Saves data. Updates an existing product if in edit mode, otherwise creates a new one.
         /// </summary>
         private void SaveData()
         {
@@ -139,45 +110,65 @@ namespace DesktopApp.ViewModel
             {
                 using (var db = new AppDbContext())
                 {
-                    var product = new ProductInfo
+                    // If _editingProductId is not 0, we are UPDATING an existing product.
+                    if (_editingProductId != 0)
                     {
-                        ProductName = this.ProductName,
-                        BatchNo = this.BatchNo,
-                        HSNCode = this.HSNCode,
-                        Packaging = this.Packaging,
-                        StockQuantity = this.StockQuantity,
-                        ExpiryDate = this.ExpiryDate,
-                        MRP = this.MRP,
-                        PTR = this.PTR
-                    };
-                    db.Products.Add(product);
-                    db.SaveChanges();
-                    MessageBox.Show("Product saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        var existingProduct = db.Products.Find(_editingProductId);
+                        if (existingProduct != null)
+                        {
+                            existingProduct.ProductName = this.ProductName;
+                            existingProduct.BatchNo = this.BatchNo;
+                            existingProduct.HSNCode = this.HSNCode;
+                            existingProduct.Packaging = this.Packaging;
+                            existingProduct.StockQuantity = this.StockQuantity;
+                            existingProduct.ExpiryDate = this.ExpiryDate;
+                            existingProduct.MRP = this.MRP;
+                            existingProduct.PTR = this.PTR;
 
-                    ResetData(); // Clear the form
-                    LoadProducts(); // Refresh the product list for the "Edit" dropdown
+                            db.Products.Update(existingProduct);
+                            MessageBox.Show("Product updated successfully!", "Success");
+                        }
+                    }
+                    // Otherwise, we are ADDING a new product.
+                    else
+                    {
+                        var newProduct = new ProductInfo
+                        {
+                            ProductName = this.ProductName,
+                            BatchNo = this.BatchNo,
+                            HSNCode = this.HSNCode,
+                            Packaging = this.Packaging,
+                            StockQuantity = this.StockQuantity,
+                            ExpiryDate = this.ExpiryDate,
+                            MRP = this.MRP,
+                            PTR = this.PTR
+                        };
+                        db.Products.Add(newProduct);
+                        MessageBox.Show("Product saved successfully!", "Success");
+                    }
+
+                    db.SaveChanges();
+                    ResetData();
+                    LoadProducts(); // Refresh the product list for the ComboBox
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving product to database: {ex.Message}", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error saving to database: {ex.Message}", "Database Error");
             }
         }
 
-        /// <summary>
-        /// Determines if the Save button should be enabled.
-        /// </summary>
         private bool CanSave()
         {
-            // Basic validation: requires a product name and a price.
-            return !string.IsNullOrWhiteSpace(ProductName) && MRP > 0 && PTR > 0;
+            return !string.IsNullOrWhiteSpace(ProductName);
         }
 
         /// <summary>
-        /// Clears all input fields on the form.
+        /// Clears all input fields and resets the form to "Add" mode.
         /// </summary>
         private void ResetData()
         {
+            _editingProductId = 0; // Crucial step to exit "Edit" mode.
             ProductName = string.Empty;
             BatchNo = string.Empty;
             HSNCode = string.Empty;
@@ -189,14 +180,11 @@ namespace DesktopApp.ViewModel
             SelectedProduct = null;
         }
 
-        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            // Ensures the CanSave method is re-evaluated when properties change
             CommandManager.InvalidateRequerySuggested();
         }
-        #endregion
     }
 }
