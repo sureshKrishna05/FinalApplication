@@ -10,116 +10,50 @@
              VerticalAlignment="Stretch"
              Background="Transparent">
 
-    <UserControl.Resources>
-        <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border Name="border" CornerRadius="5"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="RoundedComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Border CornerRadius="5"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid>
-                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0"
-                                                  Content="{TemplateBinding SelectionBoxItem}"/>
-                                <ToggleButton Grid.Column="2" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                              HorizontalAlignment="Right"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="RoundedButton" TargetType="Button">
-            <Setter Property="Background" Value="#0A4967"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
-            <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10"
-                                Cursor="Hand"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
-
     <Grid Margin="15,10,15,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Background="#0A4967" Height="2" Margin="0,0,0,15"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
-            <Button Content="Selling Bills" Width="250" Height="45" FontSize="16"
-                    Style="{StaticResource RoundedButton}" Margin="10,0"/>
-            <Button Content="Purchase Bills" Width="250" Height="45" FontSize="16"
-                    Style="{StaticResource RoundedButton}" Background="#E9E9E9" Foreground="#0A4967" Margin="10,0"/>
+            <Button x:Name="SellingBillsButton" 
+                    Content="Selling Bills" 
+                    Width="250" Height="45" FontSize="16" 
+                    Style="{StaticResource RoundedButton}" 
+                    Margin="10,0"
+                    Click="SellingBillsButton_Click"/>
+
+            <Button x:Name="PurchaseBillsButton" 
+                    Content="Purchase Bills" 
+                    Width="250" Height="45" FontSize="16" 
+                    Style="{StaticResource RoundedButton}" 
+                    Background="#E9E9E9" Foreground="#0A4967" 
+                    Margin="10,0"
+                    Click="PurchaseBillsButton_Click"/>
         </StackPanel>
 
-        <Border Grid.Row="2" Background="White" BorderBrush="#DDDDDD" BorderThickness="1"
-                CornerRadius="6" Padding="15">
+        <Border Grid.Row="2" Background="White" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,15">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0">
                     <TextBlock Text="Select Client" Margin="0,0,0,5" FontWeight="SemiBold"/>
                     <ComboBox ItemsSource="{Binding CompanyNames}"
                               SelectedItem="{Binding SelectedCompany}"
-                              Height="40"
+                              DisplayMemberPath="CompanyName" Height="40"
                               Margin="0,0,0,15"
                               Style="{StaticResource RoundedComboBoxStyle}" />
                 </StackPanel>
 
-                <Grid Grid.Row="1" Margin="0,0,0,15">
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="1*" />
@@ -130,7 +64,7 @@
                         <TextBlock Text="Select Medicine" Margin="0,0,0,5" FontWeight="SemiBold"/>
                         <ComboBox ItemsSource="{Binding MedicineList}"
                                   SelectedItem="{Binding NewProduct}"
-                                  Height="40"
+                                  DisplayMemberPath="ProductName" Height="40"
                                   Style="{StaticResource RoundedComboBoxStyle}"/>
                     </StackPanel>
 
@@ -150,10 +84,25 @@
                             Padding="15,0"
                             Height="40"/>
                 </Grid>
+            </Grid>
+        </Border>
 
-                <ListView Grid.Row="2" ItemsSource="{Binding InvoiceItems}" BorderThickness="1" BorderBrush="#EEEEEE">
+        <Border Grid.Row="3" Background="White" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="6" Padding="15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ListView Grid.Row="0" 
+                          ItemsSource="{Binding InvoiceItems}" 
+                          Style="{StaticResource ModernListViewStyle}">
                     <ListView.View>
                         <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource ModernHeaderStyle}"/>
+                            </GridView.ColumnHeaderContainerStyle>
+
                             <GridViewColumn Header="PRODUCT NAME" Width="160" DisplayMemberBinding="{Binding ProductName}" />
                             <GridViewColumn Header="BATCH NO" Width="100" DisplayMemberBinding="{Binding BatchNo}" />
                             <GridViewColumn Header="HSN" Width="80" DisplayMemberBinding="{Binding Hsn}" />
@@ -167,47 +116,43 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
+
+                <Grid Grid.Row="1" Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <Button Content="Print" Command="{Binding PrintInvoiceCommand}" Width="120" Height="40" FontSize="18" Margin="0,0,10,0" Style="{StaticResource RoundedButton}"/>
+                        <Button Content="Clear" Command="{Binding ClearInvoiceCommand}" Width="120" Height="40" FontSize="18" Background="#D32F2F" Margin="10,0,0,0" Style="{StaticResource RoundedButton}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="SubTotal: " FontWeight="Bold" Width="80" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding SubTotal, StringFormat=F2}" MinWidth="100" TextAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="SGST 6%: " FontWeight="Bold" Width="80" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding Sgst, StringFormat=F2}" MinWidth="100" TextAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="CGST 6%: " FontWeight="Bold" Width="80" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding Cgst, StringFormat=F2}" MinWidth="100" TextAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="R.off: " FontWeight="Bold" Width="80" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding RoundOff, StringFormat=F2}" MinWidth="100" TextAlignment="Right"/>
+                        </StackPanel>
+                        <Separator Margin="5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Grand Total: " FontWeight="ExtraBold" FontSize="16" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding GrandTotal, StringFormat=C}" FontWeight="ExtraBold" FontSize="16" MinWidth="100" TextAlignment="Right"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </Border>
-
-        <Grid Grid.Row="3" Margin="0,15,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Button Content="Print" Command="{Binding PrintInvoiceCommand}" Width="120" Height="40" Style="{StaticResource RoundedButton}" FontSize="18" Margin="0,0,10,0"/>
-                <Button Content="Clear" Command="{Binding ClearInvoiceCommand}" Width="120" Height="40" FontSize="18" Style="{StaticResource RoundedButton}" Background="#D32F2F" Margin="10,0,0,0" />
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Margin" Value="5,2"/>
-                    </Style>
-                </StackPanel.Resources>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="SubTotal: " FontWeight="Bold" Width="80"/>
-                    <TextBlock Text="{Binding SubTotal, StringFormat=C}" MinWidth="100" TextAlignment="Right"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Tax: " FontWeight="Bold" Width="80"/>
-                    <TextBlock Text="{Binding Tax, StringFormat=C}" MinWidth="100" TextAlignment="Right"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Discount: " FontWeight="Bold" Width="80"/>
-                    <TextBox Text="{Binding Discount, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}" 
-                             Style="{StaticResource RoundedTextBoxStyle}" 
-                             FontSize="14" Height="30" Width="105" TextAlignment="Right"/>
-                </StackPanel>
-                <Separator Margin="5"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Grand Total: " FontWeight="ExtraBold" FontSize="18"/>
-                    <TextBlock Text="{Binding GrandTotal, StringFormat=C}" FontWeight="ExtraBold" FontSize="18" MinWidth="100" TextAlignment="Right"/>
-                </StackPanel>
-            </StackPanel>
-        </Grid>
     </Grid>
 </UserControl>

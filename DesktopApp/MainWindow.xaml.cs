@@ -27,6 +27,7 @@ namespace DesktopApp
         History his = new History();
         DataEntryPage dta = new DataEntryPage();
         Billing bill = new Billing();
+        ProductEntryPage product = new ProductEntryPage();  
 
         public MainWindow()
         {
@@ -115,8 +116,8 @@ namespace DesktopApp
                 case "Invoice":
                     contentArea.Children.Clear();
                     GridText("Test");
-                    dta.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    contentArea.Children.Add(dta);
+                    product.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    contentArea.Children.Add(product);
                     break;
 
                 case "Billing":
