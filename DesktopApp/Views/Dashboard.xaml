@@ -8,62 +8,84 @@
              VerticalAlignment="Stretch"
              Background="Transparent">
 
-    <!-- Removed margin from outer Grid to allow full fill -->
-    <Grid>
+    <UserControl.Resources>
+        <!-- Style for the ListView headers in the "Recent Products" section -->
+        <Style x:Key="DashboardHeaderStyle" TargetType="GridViewColumnHeader">
+            <Setter Property="Foreground" Value="#6C757D"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="10,8"/>
+        </Style>
+    </UserControl.Resources>
 
+    <Grid Margin="15,10,15,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header -->
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="793*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0"
-                Height="2"
-                Background="#0A4967"
-                VerticalAlignment="Bottom"
-                Margin="0,0,0,10"/>
+        <Border Grid.Row="0" Height="2" Background="#0A4967" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
 
         <!-- Cards Section -->
-        <Grid Grid.RowSpan="3" Margin="0,10,0,0">
+        <Grid Grid.Row="1" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Billing Card -->
-            <Border Grid.Column="0" Background="White" CornerRadius="10" Margin="0,0,0,850" Padding="20" BorderBrush="#ddd" BorderThickness="1">
+            <!-- Today's Sales Card -->
+            <Border Grid.Column="0" Background="White" CornerRadius="10" Margin="0,0,10,0" Padding="20" BorderBrush="#ddd" BorderThickness="1">
                 <StackPanel>
                     <TextBlock Text="Today's Sales" FontWeight="Bold" FontSize="16" Margin="0 0 0 10"/>
-                    <TextBlock Text="₹ 0" FontSize="24" FontWeight="Bold" Foreground="Green"/>
+                    <!-- Data Binding for Sales -->
+                    <TextBlock Text="{Binding TodaySales}" FontSize="24" FontWeight="Bold" Foreground="Green"/>
                 </StackPanel>
             </Border>
 
-            <!-- Invoices Card -->
-            <Border Grid.Column="1" Background="White" CornerRadius="10" Margin="10,0,10,850" Padding="20" BorderBrush="#ddd" BorderThickness="1">
+            <!-- Pending Invoices Card -->
+            <Border Grid.Column="1" Background="White" CornerRadius="10" Margin="5,0,5,0" Padding="20" BorderBrush="#ddd" BorderThickness="1">
                 <StackPanel>
                     <TextBlock Text="Pending Invoices" FontWeight="Bold" FontSize="16" Margin="0 0 0 10"/>
-                    <TextBlock Text="0 Invoices" FontSize="24" FontWeight="Bold" Foreground="Orange"/>
+                    <!-- Data Binding for Invoices -->
+                    <TextBlock Text="{Binding PendingInvoices}" FontSize="24" FontWeight="Bold" Foreground="Orange"/>
                 </StackPanel>
             </Border>
 
-            <!-- Stocks Card -->
-            <Border Grid.Column="2" Background="White" CornerRadius="10" Margin="0,0,0,850" Padding="20" BorderBrush="#ddd" BorderThickness="1">
+            <!-- Low Stock Items Card -->
+            <Border Grid.Column="2" Background="White" CornerRadius="10" Margin="10,0,0,0" Padding="20" BorderBrush="#ddd" BorderThickness="1">
                 <StackPanel>
                     <TextBlock Text="Low Stock Items" FontWeight="Bold" FontSize="16" Margin="0 0 0 10"/>
-                    <TextBlock Text="0 Items" FontSize="24" FontWeight="Bold" Foreground="Red"/>
-                </StackPanel>
-            </Border>
-
-            <!-- Blah Blah panel -->
-            <Border Grid.ColumnSpan="3" Background="White" CornerRadius="10" Margin="0,170,0,20" Padding="20" BorderBrush="#ddd" BorderThickness="1">
-                <StackPanel>
-                    <TextBlock Text="Blah Blah" FontWeight="Bold" FontSize="16"/>
+                    <!-- Data Binding for Stock -->
+                    <TextBlock Text="{Binding LowStockItems}" FontSize="24" FontWeight="Bold" Foreground="Red"/>
                 </StackPanel>
             </Border>
         </Grid>
 
+        <!-- Recently Added Products Panel -->
+        <Border Grid.Row="2" Background="White" CornerRadius="10" Margin="0,20,0,0" Padding="20" BorderBrush="#ddd" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Recently Added Products" FontWeight="Bold" FontSize="18" Margin="0,0,0,15"/>
+                <ListView Grid.Row="1" ItemsSource="{Binding RecentProducts}" BorderThickness="0" Background="Transparent">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource DashboardHeaderStyle}"/>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn Header="PRODUCT NAME" Width="250" DisplayMemberBinding="{Binding ProductName}"/>
+                            <GridViewColumn Header="BATCH NO" Width="150" DisplayMemberBinding="{Binding BatchNo}"/>
+                            <GridViewColumn Header="STOCK QTY" Width="100" DisplayMemberBinding="{Binding StockQuantity}"/>
+                            <GridViewColumn Header="MRP" Width="100" DisplayMemberBinding="{Binding MRP, StringFormat=C}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
