@@ -82,12 +82,20 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Recently Added Products" FontWeight="Bold" FontSize="18" Margin="0,0,0,15"/>
-                    <ListView Grid.Row="1" ItemsSource="{Binding RecentProducts}" BorderThickness="0" Background="Transparent">
+
+                    <ListView Grid.Row="1" 
+                              ItemsSource="{Binding RecentProducts}" 
+                              Style="{StaticResource ModernListViewStyle}">
                         <ListView.View>
                             <GridView>
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource ModernHeaderStyle}"/>
+                                </GridView.ColumnHeaderContainerStyle>
+
                                 <GridViewColumn Header="PRODUCT NAME" Width="250" DisplayMemberBinding="{Binding ProductName}"/>
                                 <GridViewColumn Header="BATCH NO" Width="150" DisplayMemberBinding="{Binding BatchNo}"/>
                                 <GridViewColumn Header="STOCK QTY" Width="100" DisplayMemberBinding="{Binding StockQuantity}"/>
+                                <GridViewColumn Header="EXPIRY DATE" Width="120" DisplayMemberBinding="{Binding ExpiryDate}"/>
                                 <GridViewColumn Header="MRP" Width="100" DisplayMemberBinding="{Binding MRP, StringFormat=C}"/>
                             </GridView>
                         </ListView.View>
