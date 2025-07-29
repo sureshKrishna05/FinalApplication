@@ -17,8 +17,6 @@
 
     <Window.Resources>
 
-
-
         <Style x:Key="font_style" TargetType="TextBlock">
 
             <Setter Property="FontFamily"
@@ -97,29 +95,35 @@
                            FontFamily="Montserrat"/>
             </Grid>
 
+            <Grid x:Name="contenAndNavPanel">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <Grid x:Name="contentArea"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  Margin="250,80,20,0"
+                <Grid x:Name="contentArea"
+                      Grid.Column="1"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Margin="20,80,20,0"
 >
-            </Grid>
-            <!--// Navigation Panel //-->
+                </Grid>
+                <!--// Navigation Panel //-->
 
-            <Grid   x:Name="nav_pnl"
+                <Grid   x:Name="nav_pnl"
                     HorizontalAlignment="Left"
-                    Width="230"
+                    Grid.Column="0"
                     Background="#31708E">
 
-                <StackPanel x:Name="st_pnl">
+                    <StackPanel x:Name="st_pnl">
 
-                    <!--// Grid for the Menu Toggle Button //-->
+                        <!--// Grid for the Menu Toggle Button //-->
 
-                    <Grid Height="90">
+                        <Grid Height="90">
 
-                        <!--// Menu title text //-->
+                            <!--// Menu title text //-->
 
-                        <TextBlock  Grid.Row="1"
+                            <TextBlock  Grid.Row="1"
                                     Grid.Column="0"
                                     Margin="30,-20,0,0"
                                     Text="SS ACCOUNTING"
@@ -132,237 +136,237 @@
                             
                             <!--// Shadow Effect //-->
 
-                            <TextBlock.Effect>
+                                <TextBlock.Effect>
 
-                                <DropShadowEffect  BlurRadius="10"
+                                    <DropShadowEffect  BlurRadius="10"
                                                    ShadowDepth="1"
                                                    Direction="-90"
                                                    Color="White"/>
 
-                            </TextBlock.Effect>
+                                </TextBlock.Effect>
 
-                        </TextBlock>
+                            </TextBlock>
 
 
-                    </Grid>
+                        </Grid>
 
-                    <!--// ListView with menu list items //-->
+                        <!--// ListView with menu list items //-->
 
-                    <ListView  x:Name="LV"
+                        <ListView  x:Name="LV"
                                Background="Transparent"
                                BorderBrush="Transparent"
                                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
-                        <!--// Home //-->
+                            <!--// Home //-->
 
-                        <ListViewItem x:Name="DashboardButton"
+                            <ListViewItem x:Name="DashboardButton"
                                       HorizontalAlignment="Left"
                                       Tag="DashBoard"
                                       Margin="0,0,0,15" 
                                       PreviewMouseLeftButtonUp="LVItemClick">
 
-                            <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="/assets/Dashboard.png"
+                                    <Image Source="/assets/Dashboard.png"
                                        Stretch="Fill"
                                        Height="20"
                                        Width="20"
                                        Margin="12,0,0,0"/>
 
-                                <TextBlock Text="Dashboard"
+                                    <TextBlock Text="Dashboard"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+                                </StackPanel>
 
-                            <!--// Tooltip //-->
+                                <!--// Tooltip //-->
 
-                            <ListViewItem.ToolTip>
+                                <ListViewItem.ToolTip>
 
-                                <ToolTip x:Name="tt_home"
+                                    <ToolTip x:Name="tt_home"
                                          Content="Dashboard"
                                          Style="{StaticResource tt_style}"/>
 
-                            </ListViewItem.ToolTip>
+                                </ListViewItem.ToolTip>
 
-                        </ListViewItem>
+                            </ListViewItem>
 
-                        <!--// Contacts //-->
+                            <!--// Contacts //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
+                            <ListViewItem HorizontalAlignment="Left"
                                       Tag="Billing"
                                       Margin="0,0,0,15"
                                       PreviewMouseLeftButtonUp="LVItemClick">
 
-                            <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="/assets/Billing.png"
+                                    <Image Source="/assets/Billing.png"
                                        Stretch="UniformToFill"
                                        Height="30"
                                        Width="20"
                                        Margin="12,0,0,0"/>
 
-                                <TextBlock Text="Billing"
+                                    <TextBlock Text="Billing"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+                                </StackPanel>
 
-                            <!--// Tooltip //-->
+                                <!--// Tooltip //-->
 
-                            <ListViewItem.ToolTip>
+                                <ListViewItem.ToolTip>
 
-                                <ToolTip x:Name="tt_contacts"
+                                    <ToolTip x:Name="tt_contacts"
                                          Content="Billing"
                                          Style="{StaticResource tt_style}"/>
 
-                            </ListViewItem.ToolTip>
+                                </ListViewItem.ToolTip>
 
-                        </ListViewItem>
+                            </ListViewItem>
 
-                        <!--// Messages //-->
+                            <!--// Messages //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
+                            <ListViewItem HorizontalAlignment="Left"
                                       Tag="History"
                                       Margin="0,0,0,15" 
                                       PreviewMouseLeftButtonUp="LVItemClick">
 
-                            <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="/assets/History.png"
+                                    <Image Source="/assets/History.png"
                                        Stretch="None"
                                        Margin="12,0,0,0"/>
 
-                                <TextBlock Text="History"
+                                    <TextBlock Text="History"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+                                </StackPanel>
 
-                            <!--// Tooltip //-->
+                                <!--// Tooltip //-->
 
-                            <ListViewItem.ToolTip>
+                                <ListViewItem.ToolTip>
 
-                                <ToolTip x:Name="tt_messages"
+                                    <ToolTip x:Name="tt_messages"
                                          Content="History"
                                          Style="{StaticResource tt_style}"/>
 
-                            </ListViewItem.ToolTip>
+                                </ListViewItem.ToolTip>
 
-                        </ListViewItem>
+                            </ListViewItem>
 
-                        <!--// Maps //-->
+                            <!--// Maps //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
+                            <ListViewItem HorizontalAlignment="Left"
                                       Tag="Invoice"
                                       Margin="0,0,0,15" 
                                       PreviewMouseLeftButtonUp="LVItemClick">
 
-                            <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="/assets/Invoice.png"
+                                    <Image Source="/assets/Invoice.png"
                                        Stretch="None"
                                        Margin="12,0,0,0"/>
 
-                                <TextBlock Text="Test(Customerentry)"
+                                    <TextBlock Text="Test(Customerentry)"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+                                </StackPanel>
 
-                            <!--// Tooltip //-->
+                                <!--// Tooltip //-->
 
-                            <ListViewItem.ToolTip>
+                                <ListViewItem.ToolTip>
 
-                                <ToolTip x:Name="tt_maps"
+                                    <ToolTip x:Name="tt_maps"
                                          Content="Invoice"
                                          Style="{StaticResource tt_style}"/>
 
-                            </ListViewItem.ToolTip>
+                                </ListViewItem.ToolTip>
 
-                        </ListViewItem>
+                            </ListViewItem>
 
-                        <!--// Settings //-->
+                            <!--// Settings //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
+                            <ListViewItem HorizontalAlignment="Left"
                                       Tag="Stocks"
                                       Margin="0,0,0,15" 
                                       PreviewMouseLeftButtonUp="LVItemClick">
 
-                            <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="/assets/Stocks.png"
+                                    <Image Source="/assets/Stocks.png"
                                        Stretch="None"
                                        Margin="12,0,0,0"/>
 
-                                <TextBlock Text="Stocks"
+                                    <TextBlock Text="Stocks"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+                                </StackPanel>
 
-                            <!--// Tooltip //-->
+                                <!--// Tooltip //-->
 
-                            <ListViewItem.ToolTip>
+                                <ListViewItem.ToolTip>
 
-                                <ToolTip x:Name="tt_settings"
+                                    <ToolTip x:Name="tt_settings"
                                          Content="Stocks"
                                          Style="{StaticResource tt_style}"/>
 
-                            </ListViewItem.ToolTip>
+                                </ListViewItem.ToolTip>
 
-                        </ListViewItem>
+                            </ListViewItem>
 
-                        <!--// Sign Out //-->
+                            <!--// Sign Out //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
+                            <ListViewItem HorizontalAlignment="Left"
                                       Tag="Login"
                                       Margin="0,0,0,15" 
                                       PreviewMouseLeftButtonUp="LVItemClick">
 
-                            <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="/assets/Login.png"
+                                    <Image Source="/assets/Login.png"
                                        Stretch="None"
                                        Margin="12,0,0,0"/>
 
-                                <TextBlock Text="Login"
+                                    <TextBlock Text="Login"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+                                </StackPanel>
 
-                            <!--// Tooltip //-->
+                                <!--// Tooltip //-->
 
-                            <ListViewItem.ToolTip>
+                                <ListViewItem.ToolTip>
 
-                                <ToolTip x:Name="tt_signout"
+                                    <ToolTip x:Name="tt_signout"
                                          Content="Login"
                                          Style="{StaticResource tt_style}"/>
 
-                            </ListViewItem.ToolTip>
+                                </ListViewItem.ToolTip>
 
-                        </ListViewItem>
+                            </ListViewItem>
 
-                        <!--// Listview items style template //-->
+                            <!--// Listview items style template //-->
 
-                        <ListView.ItemContainerStyle>
+                            <ListView.ItemContainerStyle>
 
-                            <Style TargetType="ListViewItem">
+                                <Style TargetType="ListViewItem">
 
-                                <Setter Property="Template">
+                                    <Setter Property="Template">
 
-                                    <Setter.Value>
+                                        <Setter.Value>
 
-                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
 
-                                            <Border x:Name="Bd"
+                                                <Border x:Name="Bd"
                                                     Height="50"
                                                     CornerRadius="10"
                                                     BorderBrush="{TemplateBinding BorderBrush}"
@@ -371,49 +375,49 @@
                                                     Padding="{TemplateBinding Padding}"
                                                     SnapsToDevicePixels="True">
 
-                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
 
-                                            </Border>
+                                                </Border>
 
-                                            <ControlTemplate.Triggers>
-                                                <!-- Mouse Over Trigger -->
-                                                <MultiTrigger>
-                                                    <MultiTrigger.Conditions>
-                                                        <Condition Property="IsMouseOver" Value="True"/>
-                                                    </MultiTrigger.Conditions>
-                                                    <Setter Property="Background" TargetName="Bd" Value="#0A4967"/>
-                                                    <Setter Property="BorderBrush" TargetName="Bd" Value="#0A4967"/>
-                                                    <Setter Property="Cursor" TargetName="Bd" Value="Hand"/>
-                                                </MultiTrigger>
+                                                <ControlTemplate.Triggers>
+                                                    <!-- Mouse Over Trigger -->
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="IsMouseOver" Value="True"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Background" TargetName="Bd" Value="#0A4967"/>
+                                                        <Setter Property="BorderBrush" TargetName="Bd" Value="#0A4967"/>
+                                                        <Setter Property="Cursor" TargetName="Bd" Value="Hand"/>
+                                                    </MultiTrigger>
 
-                                                <!-- Selected Trigger -->
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" TargetName="Bd" Value="#0A4967"/>
-                                                    <Setter Property="BorderBrush" TargetName="Bd" Value="#0A4967"/>
-                                                    <Setter Property="Foreground" Value="White"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
+                                                    <!-- Selected Trigger -->
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Background" TargetName="Bd" Value="#0A4967"/>
+                                                        <Setter Property="BorderBrush" TargetName="Bd" Value="#0A4967"/>
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
 
-                                        </ControlTemplate>
+                                            </ControlTemplate>
 
-                                    </Setter.Value>
+                                        </Setter.Value>
 
-                                </Setter>
+                                    </Setter>
 
-                            </Style>
+                                </Style>
 
-                        </ListView.ItemContainerStyle>
+                            </ListView.ItemContainerStyle>
 
-                    </ListView>
-                </StackPanel>
+                        </ListView>
+                    </StackPanel>
 
 
-                <Grid Height="90" VerticalAlignment="Bottom" Margin="5,410,5,0">
-                    <Border Name="line" Background="#E9E9E9" 
+                    <Grid Height="90" VerticalAlignment="Bottom" Margin="5,410,5,0">
+                        <Border Name="line" Background="#E9E9E9" 
                             Height="1" VerticalAlignment="Top"/>
-                    <Button x:Name="Login"
+                        <Button x:Name="Login"
                             Height="50"
                             Style="{StaticResource RoundedButton}"
                             BorderBrush="#E9E9E9"
@@ -422,13 +426,14 @@
                             FontSize="20"
                             Cursor="Hand"
                             Click="LoginBtnClick">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Image x:Name="loginImage" Source="/Assets/login.png" Width="24" Height="24" Margin="0,0,20,0"/>
-                            <TextBlock x:Name="loginText" Text="Login" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image x:Name="loginImage" Source="/Assets/login.png" Width="24" Height="24" Margin="0,0,20,0"/>
+                                <TextBlock x:Name="loginText" Text="Login" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
 
+                </Grid>
             </Grid>
 
         </Grid>
