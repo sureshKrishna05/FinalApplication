@@ -88,6 +88,10 @@ namespace DesktopApp
         {
             this.WindowState = WindowState.Minimized;
         }
+        private void MaximizeButton_Click(Object sender, RoutedEventArgs e)
+        {
+            this.WindowState=WindowState.Normal;
+        }
         private void GridText(string message)
         {
 
