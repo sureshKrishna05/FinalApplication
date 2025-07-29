@@ -24,7 +24,9 @@
     <None Remove="Assets\Invoice.png" />
     <None Remove="Assets\Login.png" />
     <None Remove="Assets\login2.png" />
+    <None Remove="Assets\maximize.png" />
     <None Remove="Assets\minus-line-icon.png" />
+    <None Remove="Assets\restore button.png" />
     <None Remove="Assets\Stocks.png" />
     <None Remove="Assets\tgBtn_default.png" />
     <None Remove="Assets\tgBtn_MouseOver.png" />
@@ -58,7 +60,9 @@
     <Resource Include="Assets\Invoice.png" />
     <Resource Include="Assets\Login.png" />
     <Resource Include="Assets\login2.png" />
+    <Resource Include="Assets\maximize.png" />
     <Resource Include="Assets\minus-line-icon.png" />
+    <Resource Include="Assets\restore button.png" />
     <Resource Include="Assets\Stocks.png" />
     <Resource Include="Assets\tgBtn_default.png" />
     <Resource Include="Assets\tgBtn_MouseOver.png" />

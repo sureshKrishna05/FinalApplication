@@ -80,14 +80,6 @@ namespace DesktopApp
 
         }
 
-        private void CloseBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-        private void MimimizeButton(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
         private void GridText(string message)
         {
 
