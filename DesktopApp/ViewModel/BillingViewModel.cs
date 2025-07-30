@@ -1,7 +1,10 @@
-﻿using System;
+﻿using DesktopApp.Data;
+using DesktopApp.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,17 +12,8 @@ namespace DesktopApp.ViewModel
 {
     public class BillingItem : INotifyPropertyChanged
     {
-        // Backing fields for properties
-        private string _productName = string.Empty;
-        private string _batchNo = string.Empty;
-        private string _hsn = string.Empty;
-        private string _pac = string.Empty;
-        private int _quantity;
-        private string _fr = string.Empty;
-        private string _exp = string.Empty;
-        private decimal _mrp;
-        private decimal _ptr;
-        private decimal _value;
+        private int _freeQty;
+        public int FreeQty { get => _freeQty; set { _freeQty = value; OnPropertyChanged(); } }
 
         private string _productName = string.Empty;
         public string ProductName { get => _productName; set { _productName = value; OnPropertyChanged(); } }
@@ -43,6 +37,10 @@ namespace DesktopApp.ViewModel
         public decimal Value { get => _value; set { _value = value; OnPropertyChanged(); } }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class BillingViewModel : INotifyPropertyChanged
@@ -74,9 +72,8 @@ namespace DesktopApp.ViewModel
             }
         }
 
-        // FIX: Initialize string fields to avoid nullable warnings.
-        private string _newProduct = string.Empty;
-        public string NewProduct
+        private ProductInfo? _newProduct;
+        public ProductInfo? NewProduct
         {
             get => _newProduct;
             set
@@ -152,7 +149,6 @@ namespace DesktopApp.ViewModel
             SalesRepList = new ObservableCollection<string>();
             InvoiceItems.CollectionChanged += (s, e) => UpdateInvoiceSummary();
 
-            // FIX: Adapt parameterless methods to the RelayCommand constructor using a lambda expression.
             AddToInvoiceCommand = new RelayCommand(_ => AddToInvoice(), _ => CanAddToInvoice());
             ClearInvoiceCommand = new RelayCommand(_ => ClearInvoice());
             PrintInvoiceCommand = new RelayCommand(_ => PrintInvoice());
@@ -189,7 +185,7 @@ namespace DesktopApp.ViewModel
 
             var newItem = new BillingItem
             {
-                ProductName = this.NewProduct,
+                ProductName = this.NewProduct.ProductName,
                 Quantity = this.NewQty,
                 FreeQty = this.NewItemFreeQty,
                 BatchNo = this.NewProduct.BatchNo ?? "N/A",
@@ -202,8 +198,7 @@ namespace DesktopApp.ViewModel
             };
             InvoiceItems.Add(newItem);
 
-            // FIX: Set to string.Empty instead of null.
-            NewProduct = string.Empty;
+            NewProduct = null;
             NewQty = 1;
             NewItemPtr = 0;
             NewItemFreeQty = 0;
