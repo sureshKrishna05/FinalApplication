@@ -12,9 +12,11 @@ namespace DesktopApp.ViewModel
 {
     public class BillingItem : INotifyPropertyChanged
     {
+        // --- ADDED FreeQty PROPERTY ---
         private int _freeQty;
         public int FreeQty { get => _freeQty; set { _freeQty = value; OnPropertyChanged(); } }
 
+        // Existing properties...
         private string _productName = string.Empty;
         public string ProductName { get => _productName; set { _productName = value; OnPropertyChanged(); } }
         private string _batchNo = string.Empty;
@@ -50,6 +52,7 @@ namespace DesktopApp.ViewModel
         public ObservableCollection<CompanyInfo> CompanyList { get; set; }
         public ObservableCollection<ProductInfo> MedicineList { get; set; }
         public ObservableCollection<string> SalesRepList { get; set; }
+        public ObservableCollection<string> BillerList { get; set; } // For Biller ComboBox
         #endregion
 
         #region Bound Properties
@@ -91,6 +94,7 @@ namespace DesktopApp.ViewModel
         private int _newQty = 1;
         public int NewQty { get => _newQty; set { _newQty = value; OnPropertyChanged(nameof(NewQty)); } }
 
+        // --- NEW PROPERTIES FOR BILLING FEATURES ---
         private decimal _newItemPtr;
         public decimal NewItemPtr { get => _newItemPtr; set { _newItemPtr = value; OnPropertyChanged(nameof(NewItemPtr)); } }
 
@@ -106,8 +110,10 @@ namespace DesktopApp.ViewModel
         private string? _selectedSalesRep;
         public string? SelectedSalesRep { get => _selectedSalesRep; set { _selectedSalesRep = value; OnPropertyChanged(nameof(SelectedSalesRep)); } }
 
-        public string BillerName { get; } = "Suresh Krishna";
+        private string _billerName = "Suresh Krishna";
+        public string BillerName { get => _billerName; set { _billerName = value; OnPropertyChanged(nameof(BillerName)); } }
 
+        // --- Properties for on-the-fly client entry (existing) ---
         private string _clientSearchText = string.Empty;
         public string ClientSearchText { get => _clientSearchText; set { if (_clientSearchText != value) { _clientSearchText = value; OnPropertyChanged(nameof(ClientSearchText)); CheckForNewClient(); } } }
 
@@ -147,6 +153,7 @@ namespace DesktopApp.ViewModel
             CompanyList = new ObservableCollection<CompanyInfo>();
             MedicineList = new ObservableCollection<ProductInfo>();
             SalesRepList = new ObservableCollection<string>();
+            BillerList = new ObservableCollection<string>(); // Initialize new collection
             InvoiceItems.CollectionChanged += (s, e) => UpdateInvoiceSummary();
 
             AddToInvoiceCommand = new RelayCommand(_ => AddToInvoice(), _ => CanAddToInvoice());
@@ -162,6 +169,7 @@ namespace DesktopApp.ViewModel
             CompanyList.Clear();
             MedicineList.Clear();
             SalesRepList.Clear();
+            BillerList.Clear(); // Clear biller list
             try
             {
                 using (var db = new AppDbContext())
@@ -171,8 +179,12 @@ namespace DesktopApp.ViewModel
                     var products = db.Products.ToList();
                     foreach (var product in products) { MedicineList.Add(product); }
                 }
+                // Placeholder for sales reps
                 SalesRepList.Add("Ramesh Kumar");
                 SalesRepList.Add("Sathish");
+                // Placeholder for billers
+                BillerList.Add("Suresh Krishna");
+                BillerList.Add("Admin");
             }
             catch (Exception ex) { MessageBox.Show($"Error loading data from database: {ex.Message}", "Database Error"); }
         }
@@ -180,6 +192,7 @@ namespace DesktopApp.ViewModel
         private void AddToInvoice()
         {
             if (NewProduct == null) return;
+            // --- UPDATED CALCULATION LOGIC ---
             int billableQuantity = NewQty - NewItemFreeQty;
             if (billableQuantity < 0) billableQuantity = 0;
 
@@ -198,6 +211,7 @@ namespace DesktopApp.ViewModel
             };
             InvoiceItems.Add(newItem);
 
+            // Reset inputs
             NewProduct = null;
             NewQty = 1;
             NewItemPtr = 0;
@@ -210,9 +224,12 @@ namespace DesktopApp.ViewModel
         private void UpdateInvoiceSummary()
         {
             SubTotal = InvoiceItems.Sum(item => item.Value);
+
+            // --- UPDATED GST CALCULATION ---
             decimal gstRate = TotalGstPercent / 100;
             Sgst = SubTotal * (gstRate / 2);
             Cgst = SubTotal * (gstRate / 2);
+
             decimal totalBeforeRoundOff = SubTotal + Sgst + Cgst;
             GrandTotal = Math.Round(totalBeforeRoundOff, MidpointRounding.AwayFromZero);
             RoundOff = GrandTotal - totalBeforeRoundOff;
