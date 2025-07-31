@@ -13,19 +13,21 @@ namespace DesktopApp.Model
         public string ProductName { get; set; } = string.Empty;
 
         public string? BatchNo { get; set; }
-
         public string? HSNCode { get; set; }
-
-        public string? Packaging { get; set; } // e.g., "10ML"
-
+        public string? Packaging { get; set; }
         public int StockQuantity { get; set; }
-
-        public string? ExpiryDate { get; set; } // e.g., "09/26"
-
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal MRP { get; set; } // Maximum Retail Price
+        public string? ExpiryDate { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal PTR { get; set; } // Price to Retailer
+        public decimal MRP { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal PTR { get; set; }
+
+        // Added Column attribute for consistency
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal COST { get; set; } // Actual Cost
+
+        public string? ProductCategory { get; set; } // type of product
     }
 }

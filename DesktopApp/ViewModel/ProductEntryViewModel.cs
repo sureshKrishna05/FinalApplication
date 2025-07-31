@@ -12,8 +12,6 @@ namespace DesktopApp.ViewModel
     public class ProductEntryViewModel : INotifyPropertyChanged
     {
         #region Fields & Properties
-        // This field will track the ID of the product being edited.
-        // If it's 0, we are in "Add" mode. Otherwise, we are in "Edit" mode.
         private int _editingProductId = 0;
 
         private string _productName = string.Empty;
@@ -40,6 +38,15 @@ namespace DesktopApp.ViewModel
         private decimal _ptr;
         public decimal PTR { get => _ptr; set { _ptr = value; OnPropertyChanged(nameof(PTR)); } }
 
+        private decimal _cost;
+        public decimal COST { get => _cost; set { _cost = value; OnPropertyChanged(nameof(COST)); } }
+
+        private string? _productCategory;
+        public string? ProductCategory { get => _productCategory; set { _productCategory = value; OnPropertyChanged(nameof(ProductCategory)); } }
+
+        // --- NEW COLLECTION FOR THE COMBOBOX ---
+        public ObservableCollection<string> ProductCategories { get; set; }
+
         public ObservableCollection<ProductInfo> Products { get; set; }
 
         private ProductInfo? _selectedProduct;
@@ -49,11 +56,7 @@ namespace DesktopApp.ViewModel
             set
             {
                 _selectedProduct = value;
-                // When a product is selected from the ComboBox, load its details.
-                if (value != null)
-                {
-                    LoadProductDetails(value);
-                }
+                if (value != null) LoadProductDetails(value);
                 OnPropertyChanged(nameof(SelectedProduct));
             }
         }
@@ -67,6 +70,9 @@ namespace DesktopApp.ViewModel
         public ProductEntryViewModel()
         {
             Products = new ObservableCollection<ProductInfo>();
+            // --- INITIALIZE THE CATEGORIES LIST ---
+            ProductCategories = new ObservableCollection<string> { "Tablet", "Syrup", "Ointment", "Injection", "Capsule", "Other" };
+
             SaveCommand = new RelayCommand(_ => SaveData(), _ => CanSave());
             ResetCommand = new RelayCommand(_ => ResetData());
             LoadProducts();
@@ -78,19 +84,13 @@ namespace DesktopApp.ViewModel
             using (var db = new AppDbContext())
             {
                 var products = db.Products.ToList();
-                foreach (var p in products)
-                {
-                    Products.Add(p);
-                }
+                foreach (var p in products) { Products.Add(p); }
             }
         }
 
-        /// <summary>
-        /// Populates the form fields with the data of the selected product for editing.
-        /// </summary>
         private void LoadProductDetails(ProductInfo product)
         {
-            _editingProductId = product.Id; // Store the ID, indicating we are in "Edit" mode.
+            _editingProductId = product.Id;
             ProductName = product.ProductName;
             BatchNo = product.BatchNo ?? "";
             HSNCode = product.HSNCode ?? "";
@@ -99,18 +99,16 @@ namespace DesktopApp.ViewModel
             ExpiryDate = product.ExpiryDate ?? "";
             MRP = product.MRP;
             PTR = product.PTR;
+            COST = product.COST;
+            ProductCategory = product.ProductCategory ?? "";
         }
 
-        /// <summary>
-        /// Saves data. Updates an existing product if in edit mode, otherwise creates a new one.
-        /// </summary>
         private void SaveData()
         {
             try
             {
                 using (var db = new AppDbContext())
                 {
-                    // If _editingProductId is not 0, we are UPDATING an existing product.
                     if (_editingProductId != 0)
                     {
                         var existingProduct = db.Products.Find(_editingProductId);
@@ -124,12 +122,12 @@ namespace DesktopApp.ViewModel
                             existingProduct.ExpiryDate = this.ExpiryDate;
                             existingProduct.MRP = this.MRP;
                             existingProduct.PTR = this.PTR;
-
+                            existingProduct.COST = this.COST;
+                            existingProduct.ProductCategory = this.ProductCategory;
                             db.Products.Update(existingProduct);
                             MessageBox.Show("Product updated successfully!", "Success");
                         }
                     }
-                    // Otherwise, we are ADDING a new product.
                     else
                     {
                         var newProduct = new ProductInfo
@@ -141,7 +139,9 @@ namespace DesktopApp.ViewModel
                             StockQuantity = this.StockQuantity,
                             ExpiryDate = this.ExpiryDate,
                             MRP = this.MRP,
-                            PTR = this.PTR
+                            PTR = this.PTR,
+                            ProductCategory = this.ProductCategory,
+                            COST = this.COST
                         };
                         db.Products.Add(newProduct);
                         MessageBox.Show("Product saved successfully!", "Success");
@@ -149,7 +149,7 @@ namespace DesktopApp.ViewModel
 
                     db.SaveChanges();
                     ResetData();
-                    LoadProducts(); // Refresh the product list for the ComboBox
+                    LoadProducts();
                 }
             }
             catch (Exception ex)
@@ -163,12 +163,9 @@ namespace DesktopApp.ViewModel
             return !string.IsNullOrWhiteSpace(ProductName);
         }
 
-        /// <summary>
-        /// Clears all input fields and resets the form to "Add" mode.
-        /// </summary>
         private void ResetData()
         {
-            _editingProductId = 0; // Crucial step to exit "Edit" mode.
+            _editingProductId = 0;
             ProductName = string.Empty;
             BatchNo = string.Empty;
             HSNCode = string.Empty;
@@ -177,6 +174,8 @@ namespace DesktopApp.ViewModel
             ExpiryDate = string.Empty;
             MRP = 0;
             PTR = 0;
+            ProductCategory = null;
+            COST = 0;
             SelectedProduct = null;
         }
 

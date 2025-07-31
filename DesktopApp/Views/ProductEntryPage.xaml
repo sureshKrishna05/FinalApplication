@@ -53,13 +53,15 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <!-- Row 0: Product Name / Selection -->
                     <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,20">
                         <TextBlock Text="Product Name:" FontWeight="DemiBold" Margin="0,0,0,5"/>
                         <TextBox x:Name="Name_Product" Style="{StaticResource RoundedTextBoxStyle}" Height="38" Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
-                        <ComboBox x:Name="Combo_Product" Height="38" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" DisplayMemberPath="ProductName" Visibility="Collapsed"/>
+                        <ComboBox x:Name="Combo_Product" Height="38" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" 
+                                  Style="{StaticResource RoundedComboBoxStyle}" DisplayMemberPath="ProductName" Visibility="Collapsed"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,20">
@@ -98,6 +100,17 @@
                     <StackPanel Grid.Row="3" Grid.Column="2" Margin="0,0,0,20">
                         <TextBlock Text="P.T.R.:" FontWeight="DemiBold" Margin="0,0,0,5"/>
                         <TextBox Style="{StaticResource RoundedTextBoxStyle}" Height="38" Text="{Binding PTR, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                    <!-- Row 4: COST PRICE / ProductType -->
+                    <StackPanel Grid.Row="4" Grid.Column="0" Margin="0,0,0,20">
+                        <TextBlock Text="Cost Price:" FontWeight="DemiBold" Margin="0,0,0,5"/>
+                        <TextBox Style="{StaticResource RoundedTextBoxStyle}" Height="38" Text="{Binding COST, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Grid.Column="2" Margin="0,0,0,20">
+                        <TextBlock Text="Product Type:" FontWeight="DemiBold" Margin="0,0,0,5"/>
+                        <ComboBox Style="{StaticResource RoundedComboBoxStyle}" Height="38" ItemsSource="{Binding ProductCategories, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ProductCategory}"/>
                     </StackPanel>
                 </Grid>
             </Border>
