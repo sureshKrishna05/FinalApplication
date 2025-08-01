@@ -47,59 +47,44 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Margin="0,0,10,0">
                         <TextBlock Text="Select or Enter Client Name" Margin="0,0,0,5" FontWeight="SemiBold"/>
-                        <ComboBox ItemsSource="{Binding CompanyList}"
-                                  SelectedItem="{Binding SelectedCompany}"
-                                  Text="{Binding ClientSearchText, UpdateSourceTrigger=PropertyChanged}"
-                                  DisplayMemberPath="CompanyName" 
-                                  IsEditable="True"
-                                  Height="40"
-                                  Margin="0,0,0,15"
-                                  Style="{StaticResource RoundedComboBoxStyle}" />
+                        <ComboBox ItemsSource="{Binding CompanyList}" SelectedItem="{Binding SelectedCompany}" Text="{Binding ClientSearchText, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="CompanyName" IsEditable="True" Height="40" Margin="0,0,0,15" Style="{StaticResource RoundedComboBoxStyle}" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10,0,0,0">
                         <TextBlock Text="Sales Representative" Margin="0,0,0,5" FontWeight="SemiBold"/>
-                        <ComboBox ItemsSource="{Binding SalesRepList}" 
-                                  SelectedItem="{Binding SelectedSalesRep}" 
-                                  Height="40" Margin="0,0,0,15" 
-                                  Style="{StaticResource RoundedComboBoxStyle}"/>
+                        <ComboBox ItemsSource="{Binding SalesRepList}" SelectedItem="{Binding SelectedSalesRep}" Height="40" Margin="0,0,0,15" Style="{StaticResource RoundedComboBoxStyle}"/>
                     </StackPanel>
                 </Grid>
 
                 <StackPanel Grid.Row="1" Visibility="{Binding IsNewClientEntryVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                            <TextBlock Text="New Client GSTIN:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-                            <TextBox Text="{Binding NewClientGstin, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBoxStyle}" Height="40"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Margin="10,0,10,0">
-                            <TextBlock Text="Address:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-                            <TextBox Text="{Binding NewClientAddress, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBoxStyle}" Height="40"/>
-                        </StackPanel>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,10,15"><TextBlock Text="New Client GSTIN:" Margin="0,0,0,5" FontWeight="SemiBold"/><TextBox Text="{Binding NewClientGstin, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBoxStyle}" Height="40"/></StackPanel>
+                        <StackPanel Grid.Column="1" Margin="10,0,10,15"><TextBlock Text="Address:" Margin="0,0,0,5" FontWeight="SemiBold"/><TextBox Text="{Binding NewClientAddress, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBoxStyle}" Height="40"/></StackPanel>
                         <Button Grid.Column="2" Content="Save Company" Command="{Binding SaveNewClientCommand}" Style="{StaticResource RoundedButton}" Background="#1E90FF" VerticalAlignment="Bottom" Padding="15,0" Height="40"/>
                     </Grid>
                 </StackPanel>
-
-                <StackPanel Grid.Row="2" Margin="0,5,0,10">
-                    <TextBlock Text="Dispatch From:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-                    <StackPanel Orientation="Horizontal">
-                        <RadioButton Content="Own Inventory" GroupName="DispatchSource" IsChecked="{Binding DispatchSource, ConverterParameter=Own Inventory, Converter={StaticResource EnumToBooleanConverter}}"/>
-                        <RadioButton Content="Stockist Inventory" GroupName="DispatchSource" IsChecked="{Binding DispatchSource, ConverterParameter=Stockist Inventory, Converter={StaticResource EnumToBooleanConverter}}" Margin="15,0,0,0"/>
+                
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,5,20,10">
+                         <TextBlock Text="Dispatched To:" Margin="0,0,0,5" FontWeight="SemiBold"/>
+                         <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="Client" GroupName="DispatchSource" IsChecked="{Binding DispatchSource, ConverterParameter=Client, Converter={StaticResource EnumToBooleanConverter}}"/>
+                            <RadioButton Content="Stockist" GroupName="DispatchSource" IsChecked="{Binding DispatchSource, ConverterParameter=Stockist, Converter={StaticResource EnumToBooleanConverter}}" Margin="15,0,0,0"/>
+                         </StackPanel>
                     </StackPanel>
-                </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                        <TextBlock Text="Total GST (%):" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding TotalGstPercent, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left" Style="{StaticResource RoundedTextBoxStyle}" Height="40"/>
+                    </StackPanel>
+                </Grid>
 
                 <Grid Grid.Row="3" Margin="0,15,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="0.8*" />
-                        <ColumnDefinition Width="0.8*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />   <ColumnDefinition Width="1*" />   <ColumnDefinition Width="0.8*" /> <ColumnDefinition Width="0.8*" /> <ColumnDefinition Width="Auto" /> </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Margin="0,0,10,0">
                         <TextBlock Text="Select Medicine" Margin="0,0,0,5" FontWeight="SemiBold"/>
                         <ComboBox ItemsSource="{Binding MedicineList}" SelectedItem="{Binding NewProduct}" DisplayMemberPath="ProductName" Height="40" Style="{StaticResource RoundedComboBoxStyle}"/>
@@ -127,14 +112,12 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
+                
                 <ListView Grid.Row="0" ItemsSource="{Binding InvoiceItems}" Style="{StaticResource ModernListViewStyle}">
                     <ListView.View>
                         <GridView>
-                            <GridView.ColumnHeaderContainerStyle>
-                                <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource ModernHeaderStyle}"/>
-                            </GridView.ColumnHeaderContainerStyle>
-                            <GridViewColumn Header="PRODUCT NAME" Width="160" DisplayMemberBinding="{Binding ProductName}" />
+                            <GridView.ColumnHeaderContainerStyle><Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource ModernHeaderStyle}"/></GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn Header="PRODUCT NAME" Width="200" DisplayMemberBinding="{Binding ProductName}" />
                             <GridViewColumn Header="BATCH NO" Width="100" DisplayMemberBinding="{Binding BatchNo}" />
                             <GridViewColumn Header="QTY" Width="50" DisplayMemberBinding="{Binding Quantity}" />
                             <GridViewColumn Header="FREE" Width="50" DisplayMemberBinding="{Binding FreeQty}" />
@@ -143,44 +126,58 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-
+                
                 <Grid Grid.Row="1" Margin="0,15,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                        <TextBlock Text="Billed By:" VerticalAlignment="Center" Margin="0,0,5,0" Foreground="Gray" FontStyle="Italic"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1" Orientation="Vertical">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="SubTotal: " FontWeight="Bold" Width="90" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding SubTotal, StringFormat=F2}" MinWidth="100" TextAlignment="Right"/>
+                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/> </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" VerticalAlignment="Bottom">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="Billed By:" VerticalAlignment="Center" Margin="0,0,5,0" Foreground="Gray" FontStyle="Italic"/>
+                            <ComboBox ItemsSource="{Binding BillerList}" Text="{Binding BillerName}" IsEditable="True" Style="{StaticResource RoundedComboBoxStyle}" Width="200" FontSize="12" Padding="5,3"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Total GST (%):" FontWeight="Bold" Width="90" TextAlignment="Right" Margin="0,0,5,0"/>
-                            <TextBox Text="{Binding TotalGstPercent, UpdateSourceTrigger=PropertyChanged}" Width="100" Style="{StaticResource RoundedTextBoxStyle}" FontSize="12" Padding="5,3"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="SGST: " FontWeight="Bold" Width="90" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding Sgst, StringFormat=F2}" MinWidth="100" TextAlignment="Right"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="CGST: " FontWeight="Bold" Width="90" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding Cgst, StringFormat=F2}" MinWidth="100" TextAlignment="Right"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="R.off: " FontWeight="Bold" Width="90" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding RoundOff, StringFormat=F2}" MinWidth="100" TextAlignment="Right"/>
-                        </StackPanel>
-                        <Separator Margin="5"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Grand Total: " FontWeight="ExtraBold" FontSize="16" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding GrandTotal, StringFormat=C}" FontWeight="ExtraBold" FontSize="16" MinWidth="100" TextAlignment="Right"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                            <Button Content="Print" Command="{Binding PrintInvoiceCommand}" Width="120" Height="40" FontSize="18" Margin="0,0,10,0" Style="{StaticResource RoundedButton}"/>
+                            <Button Content="Clear" Command="{Binding ClearInvoiceCommand}" Width="120" Height="40" FontSize="18" Background="#D32F2F" Margin="10,0,0,0" Style="{StaticResource RoundedButton}" />
                         </StackPanel>
                     </StackPanel>
+                    
+                    <Border Grid.Column="1" Background="#F9FAFB" CornerRadius="6" Padding="15" BorderBrush="#EEEEEE" BorderThickness="1">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Margin" Value="5,3"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="SubTotal:" FontWeight="SemiBold" TextAlignment="Right"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SubTotal, StringFormat=C}" MinWidth="120" TextAlignment="Right" FontWeight="SemiBold"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="SGST:" TextAlignment="Right"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Sgst, StringFormat=C}" MinWidth="120" TextAlignment="Right"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="CGST:" TextAlignment="Right"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Cgst, StringFormat=C}" MinWidth="120" TextAlignment="Right"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Round Off:" TextAlignment="Right"/>
+                                <TextBlock Grid.Column="1" Text="{Binding RoundOff, StringFormat=F2}" MinWidth="120" TextAlignment="Right"/>
+                            </Grid>
+                            <Separator Margin="5"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="120"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Grand Total:" FontWeight="Bold" FontSize="18" TextAlignment="Right"/>
+                                <TextBlock Grid.Column="1" Text="{Binding GrandTotal, StringFormat=C}" FontWeight="Bold" FontSize="18" MinWidth="120" TextAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </Grid>
         </Border>

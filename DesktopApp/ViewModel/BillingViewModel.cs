@@ -12,11 +12,8 @@ namespace DesktopApp.ViewModel
 {
     public class BillingItem : INotifyPropertyChanged
     {
-        // --- ADDED FreeQty PROPERTY ---
         private int _freeQty;
         public int FreeQty { get => _freeQty; set { _freeQty = value; OnPropertyChanged(); } }
-
-        // Existing properties...
         private string _productName = string.Empty;
         public string ProductName { get => _productName; set { _productName = value; OnPropertyChanged(); } }
         private string _batchNo = string.Empty;
@@ -52,28 +49,12 @@ namespace DesktopApp.ViewModel
         public ObservableCollection<CompanyInfo> CompanyList { get; set; }
         public ObservableCollection<ProductInfo> MedicineList { get; set; }
         public ObservableCollection<string> SalesRepList { get; set; }
-        public ObservableCollection<string> BillerList { get; set; } // For Biller ComboBox
+        public ObservableCollection<string> BillerList { get; set; }
         #endregion
 
         #region Bound Properties
         private CompanyInfo? _selectedCompany;
-        public CompanyInfo? SelectedCompany
-        {
-            get => _selectedCompany;
-            set
-            {
-                _selectedCompany = value;
-                OnPropertyChanged(nameof(SelectedCompany));
-                if (value != null && value.CompanyName != ClientSearchText)
-                {
-                    ClientSearchText = value.CompanyName;
-                }
-                if (value != null)
-                {
-                    IsNewClientEntryVisible = false;
-                }
-            }
-        }
+        public CompanyInfo? SelectedCompany { get => _selectedCompany; set { _selectedCompany = value; OnPropertyChanged(nameof(SelectedCompany)); if (value != null && value.CompanyName != ClientSearchText) { ClientSearchText = value.CompanyName; } if (value != null) { IsNewClientEntryVisible = false; } } }
 
         private ProductInfo? _newProduct;
         public ProductInfo? NewProduct
@@ -93,36 +74,24 @@ namespace DesktopApp.ViewModel
 
         private int _newQty = 1;
         public int NewQty { get => _newQty; set { _newQty = value; OnPropertyChanged(nameof(NewQty)); } }
-
-        // --- NEW PROPERTIES FOR BILLING FEATURES ---
         private decimal _newItemPtr;
         public decimal NewItemPtr { get => _newItemPtr; set { _newItemPtr = value; OnPropertyChanged(nameof(NewItemPtr)); } }
-
         private int _newItemFreeQty;
         public int NewItemFreeQty { get => _newItemFreeQty; set { _newItemFreeQty = value; OnPropertyChanged(nameof(NewItemFreeQty)); } }
-
         private decimal _totalGstPercent;
         public decimal TotalGstPercent { get => _totalGstPercent; set { _totalGstPercent = value; OnPropertyChanged(nameof(TotalGstPercent)); UpdateInvoiceSummary(); } }
-
-        private string _dispatchSource = "Own Inventory";
+        private string _dispatchSource = "Client";
         public string DispatchSource { get => _dispatchSource; set { _dispatchSource = value; OnPropertyChanged(nameof(DispatchSource)); } }
-
         private string? _selectedSalesRep;
         public string? SelectedSalesRep { get => _selectedSalesRep; set { _selectedSalesRep = value; OnPropertyChanged(nameof(SelectedSalesRep)); } }
-
         private string _billerName = "Suresh Krishna";
         public string BillerName { get => _billerName; set { _billerName = value; OnPropertyChanged(nameof(BillerName)); } }
-
-        // --- Properties for on-the-fly client entry (existing) ---
         private string _clientSearchText = string.Empty;
         public string ClientSearchText { get => _clientSearchText; set { if (_clientSearchText != value) { _clientSearchText = value; OnPropertyChanged(nameof(ClientSearchText)); CheckForNewClient(); } } }
-
         private string _newClientGstin = string.Empty;
         public string NewClientGstin { get => _newClientGstin; set { _newClientGstin = value; OnPropertyChanged(nameof(NewClientGstin)); } }
-
         private string _newClientAddress = string.Empty;
         public string NewClientAddress { get => _newClientAddress; set { _newClientAddress = value; OnPropertyChanged(nameof(NewClientAddress)); } }
-
         private bool _isNewClientEntryVisible;
         public bool IsNewClientEntryVisible { get => _isNewClientEntryVisible; set { _isNewClientEntryVisible = value; OnPropertyChanged(nameof(IsNewClientEntryVisible)); } }
         #endregion
@@ -153,14 +122,13 @@ namespace DesktopApp.ViewModel
             CompanyList = new ObservableCollection<CompanyInfo>();
             MedicineList = new ObservableCollection<ProductInfo>();
             SalesRepList = new ObservableCollection<string>();
-            BillerList = new ObservableCollection<string>(); // Initialize new collection
+            BillerList = new ObservableCollection<string>();
             InvoiceItems.CollectionChanged += (s, e) => UpdateInvoiceSummary();
 
             AddToInvoiceCommand = new RelayCommand(_ => AddToInvoice(), _ => CanAddToInvoice());
             ClearInvoiceCommand = new RelayCommand(_ => ClearInvoice());
             PrintInvoiceCommand = new RelayCommand(_ => PrintInvoice());
             SaveNewClientCommand = new RelayCommand(_ => SaveNewClient(), _ => CanSaveNewClient());
-
             LoadInitialData();
         }
 
@@ -169,7 +137,7 @@ namespace DesktopApp.ViewModel
             CompanyList.Clear();
             MedicineList.Clear();
             SalesRepList.Clear();
-            BillerList.Clear(); // Clear biller list
+            BillerList.Clear();
             try
             {
                 using (var db = new AppDbContext())
@@ -179,23 +147,19 @@ namespace DesktopApp.ViewModel
                     var products = db.Products.ToList();
                     foreach (var product in products) { MedicineList.Add(product); }
                 }
-                // Placeholder for sales reps
                 SalesRepList.Add("Ramesh Kumar");
                 SalesRepList.Add("Sathish");
-                // Placeholder for billers
                 BillerList.Add("Suresh Krishna");
                 BillerList.Add("Admin");
             }
-            catch (Exception ex) { MessageBox.Show($"Error loading data from database: {ex.Message}", "Database Error"); }
+            catch (Exception ex) { MessageBox.Show($"Error loading data: {ex.Message}", "Database Error"); }
         }
 
         private void AddToInvoice()
         {
             if (NewProduct == null) return;
-            // --- UPDATED CALCULATION LOGIC ---
             int billableQuantity = NewQty - NewItemFreeQty;
             if (billableQuantity < 0) billableQuantity = 0;
-
             var newItem = new BillingItem
             {
                 ProductName = this.NewProduct.ProductName,
@@ -210,13 +174,11 @@ namespace DesktopApp.ViewModel
                 Value = billableQuantity * this.NewItemPtr
             };
             InvoiceItems.Add(newItem);
-
-            // Reset inputs
             NewProduct = null;
             NewQty = 1;
             NewItemPtr = 0;
             NewItemFreeQty = 0;
-            TotalGstPercent = 0;
+            TotalGstPercent = 12; // Reset GST to default after adding an item
         }
 
         private bool CanAddToInvoice() { return NewProduct != null && NewQty > 0; }
@@ -224,12 +186,9 @@ namespace DesktopApp.ViewModel
         private void UpdateInvoiceSummary()
         {
             SubTotal = InvoiceItems.Sum(item => item.Value);
-
-            // --- UPDATED GST CALCULATION ---
             decimal gstRate = TotalGstPercent / 100;
             Sgst = SubTotal * (gstRate / 2);
             Cgst = SubTotal * (gstRate / 2);
-
             decimal totalBeforeRoundOff = SubTotal + Sgst + Cgst;
             GrandTotal = Math.Round(totalBeforeRoundOff, MidpointRounding.AwayFromZero);
             RoundOff = GrandTotal - totalBeforeRoundOff;
